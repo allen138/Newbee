@@ -22,52 +22,60 @@
 <body>
   <!---------------- nav bar ----------------->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="index.html">
-      <img src="assets/images/beeIcon.png" width="30" height="30" class="d-inline-block align-top" alt="">
-      Newbee</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-      aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="myEvents.html">My Events</a>
-      </div>
-    </div>
-    <div class="dropdown" style="margin-right: 115px;">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        Hello, Sign in
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="assets/images/beeIcon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        Newbee</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <form class="dropdown-menu p-4" id="sign-in" style="width: 250px;">
-        <div class="form-group">
-          <label for="exampleDropdownFormEmail2">Email address</label>
-          <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="myEvents.html">My Events</a>
         </div>
-        <div class="form-group">
-          <label for="exampleDropdownFormPassword2">Password</label>
-          <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
-        </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="dropdownCheck2">
-          <label class="form-check-label" for="dropdownCheck2">
-            Remember me
-          </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
-      </form>
+      </div>
+      <div class="dropdown" style="float: right;">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Hello, Sign in
+        </button>
+        <form class="dropdown-menu p-4" id="sign-in" style="width: 250px;">
+          <div class="form-group">
+            <label for="exampleDropdownFormEmail2">Email address</label>
+            <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label for="exampleDropdownFormPassword2">Password</label>
+            <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="dropdownCheck2">
+            <label class="form-check-label" for="dropdownCheck2">
+              Remember me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+      </div>
     </div>
   </nav>
   <!------------------ Jumbotron ------------------------->
-  <div class="jumbotron jumbotron-fluid">
+  <div class="jumbotron jumbotron-fluid events-title">
     <div class="container">
-      <h1 class="display-4 my-events">My Events</h1>
+      <h1 class="my-events">My Events</h1>
     </div>
   </div>
   <!------------------ api response --------------------->
   <div class="response">
-    <p>events that user has selected...</p>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 events">
+          <p>events that user has selected...</p>
+        </div>
+      </div>
+    </div>
     <br>
     <br>
     <br>
@@ -77,7 +85,6 @@
     <br>
     <br>
     <br>
-
   </div>
   <footer> Have Fun Newbee &copy;2018</footer>
   <script src="assets/javascript/app.js"></script>
