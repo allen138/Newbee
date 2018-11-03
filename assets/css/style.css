@@ -1,0 +1,37 @@
+/* style.css */
+
+.jumbotron {
+    margin-bottom: 0px;
+}
+.header{
+    font-family: 'Poor Story', cursive;
+}
+input {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+#search {
+    margin-left: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+footer {
+    padding: 20px;
+    text-align: center;
+    background-color: #e9ecef;
+}
+.response {
+    background-image: url(../images/full-bloom.png);
+}
+.my-events{
+    font-family: 'Poor Story', cursive;
+}
+.events-title {
+    padding-bottom: 0;
+}
+.container {
+    width: 960px;
+    margin: 0 auto;
+}
