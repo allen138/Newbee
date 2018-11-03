@@ -64,20 +64,10 @@ $(document).ready(function() {
 // click function rendering search input. 
 $("#search").on("click", function (event) {
   event.preventDefault();
-  console.log("clicked");
-  var search = $("input:checked").val();
-  console.log(search);
-  console.log(seatgeek.getEvents(11,false));
-  
-  // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
-
-  // $.ajax({
-  //   url: queryURL,
-  //   method: "GET",
-  // }).then(function (response) {
-  //   console.log(response);
-    
-  // });
+  $.each($("input:checked"), function() {
+    var search = $(this).val();  
+    console.log(search);
+  });
 });
 // function to render api results to ui
 

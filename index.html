@@ -10,7 +10,7 @@
     crossorigin="anonymous">
   <!-- link css -->
   <link href="https://fonts.googleapis.com/css?family=Poor+Story" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Open+Sans" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Oswald" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="icon" href="assets/images/beeIcon.png" sizes="16x16" type="image/png">
   <title>New In Town!</title>
@@ -66,10 +66,25 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" value="sports">Sports
-            <input type="checkbox" value="concert">Concerts
-            <input type="checkbox" value="comedy">Theater
-            <button class="btn btn-outline-success my-2 my-sm-0" id="search"> GO </button>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label" for="inlineCheckbox1">Sports
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="sports">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label" for="inlineCheckbox2">Concerts
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="concert">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label" for="inlineCheckbox3">Comedy Shows
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="comedy">
+                <span class="checkmark"></span>
+              </label>
+              <button class="btn btn-outline-success my-2 my-sm-0" id="search"> GO </button>
+            </div>
           </div>
         </div>
       </div>
