@@ -27,44 +27,45 @@ var seatgeek = {
   geoIP : "",
   rangeInMiles : 10,
   sortField : "datetime_local",
-  sortOrder : "desc"
+  sortOrder : "desc",
+  setGeoIP : function() {
+    $.getJSON('http://ipinfo.io', function (data) {
+      this.geoIP = data.ip;
+    });
+  },
+  getEvents : function(rangeInMile,isAsc) {
+    // validation
+    this.rangeInMiles
+    this.setGeoIP;
+    if ( isAsc ) {
+      this.sortOrder = true;
+    } else {
+      this.sortOrder = false;
+    }
+    // api
+    $.ajax({
+      url : this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
+      "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
+      method : "GET"
+    }).then(function(res){
+      return res;
+    });
+  }
+  
+/**
+* testing
+*/
+// seatgeek.geoIP = "73.241.184.21";
+  
 };
 
 /**
  * 
  * END OF GLOBALS
  */
-
 /**
  * sample api : https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA&geoip=73.241.184.216&range=12mi&sort=datetime_local.desc
  */
-
- /**
-  * @param pass the seakgeek obj fully populated
-  * @param geoIP this is the ip from the browser
-  * @param radiusInMiles  this is the radius from the geoip address point.
-  * 
-  * Use the url to search for events that are now and in the future
-  */
- function getData() {
-
-  $.ajax({
-    url : seatgeek.url + "&geoip=" + seatgeek.geoIP + "&range=" + seatgeek.rangeInMiles + "mi" +
-    "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
-    method : "GET"
-  }).then(function(res){
-
-    return res;
-
-  });
-
-};
-
-/**
-* testing
-*/
-// seatgeek.geoIP = "73.241.184.21";
-
 
 // click function rendering search input. 
 $("#search").on("click", function (event) {
