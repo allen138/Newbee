@@ -100,3 +100,4 @@ function renderResults(results) {
   events.append(eventsList);
 }
 
+});
