@@ -39,21 +39,23 @@ $(document).ready(function() {
         this.sortOrder = "desc";
       }
       // api
-      console.log(this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
-      "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder);
-      $.ajax({
+     var eres = null; 
+     $.ajax({
         url : "http://ipinfo.io/json",
         method : "GET"
       }).then(function(res){
         var ip = res.ip;
         console.log(res.ip);
         console.log("&geoip=" + ip+ "&range=");
+        console.log(seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
+        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder);
         $.ajax({
-          url : seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
+          url : seatgeek.url + "&geoip=" + ip+ "&range=" + seatgeek.rangeInMiles + "mi" +
           "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
           method : "GET"
         }).then(function(res){        
-          return res;
+          eres = res;
+          console.log(res);
         });
       });
     }
@@ -66,7 +68,6 @@ $("#search").on("click", function (event) {
   var search = $("input:checked").val();
   console.log(search);
   console.log(seatgeek.getEvents(11,false));
-  console.log(seatgeek);
   
   // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
 
