@@ -30,28 +30,30 @@ $(document).ready(function() {
     rangeInMiles : 10,
     sortField : "datetime_local",
     sortOrder : "desc",
-    setGeoIP : function() {
-      $.getJSON('http://ipinfo.io', function (data) {
-        this.geoIP = data.ip;
-      });
-    },
     getEvents : function(rangeInMile,isAsc) {
       // validation
       this.rangeInMiles
-      //this.setGeoIP;
+      // sort order 
       if ( isAsc ) {
         this.sortOrder = "asc";
       } else {
         this.sortOrder = "desc";
       }
       // api
-      console.log(seatgeek.url );
+      console.log(this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
+      "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder);
       $.ajax({
-        url : this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
-        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
+        url : "http://ipinfo.io/json",
         method : "GET"
       }).then(function(res){
-        return res;
+        this.geoIP = res.ip;
+        $.ajax({
+          url : this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
+          "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
+          method : "GET"
+        }).then(function(res){        
+          return res;
+        });
       });
     }
   };    
@@ -62,16 +64,8 @@ $("#search").on("click", function (event) {
   console.log("clicked");
   var search = $("input:checked").val();
   console.log(search);
-<<<<<<< HEAD
-  console.log(seatgeek);
-=======
-
-  var data = {
-    event:search
-  }
-
-  pushChildFB(data);
->>>>>>> afbddf71a8659342783daa4da075f38c5cd4a1bf
+  console.log(seatgeek.geoIP);
+  console.log(seatgeek.getEvents(10,false));
   
   // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
 
@@ -140,7 +134,7 @@ var getAllValuesFB = function () {
 };
 
 /* Get's child from Fire Base */
-var getChildAdded = function(){
+var checkChildAdded = function(){
 
       database.ref().on("child_added", function (snapshot) {
         var val = snapshot.val(); 
@@ -150,14 +144,6 @@ var getChildAdded = function(){
         console.log("Error " + errorObject.code);
     });
 
-}
-
-/** Push Data to FB */
-
-var pushChildFB = function(obj){
-  database.ref().push({
-    event: obj.event
-  });
 }
 
 
