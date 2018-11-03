@@ -35,3 +35,17 @@ footer {
     width: 960px;
     margin: 0 auto;
 }
+
+
+
+.eventContainer{
+    background-color: lightskyblue;
+    height:50px;
+    width: 100%;
+}
+.title{
+    border: 1px solid #000000;
+ 
+    vertical-align: middle;
+    text-align: center;
+}

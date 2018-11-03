@@ -28,6 +28,7 @@ $("#search").on("click", function (event) {
   // });
 });
 // function to render api results to ui
+
 function renderResults(results) {
 
   var events = $("<ul>");
@@ -43,4 +44,26 @@ function renderResults(results) {
 
   events.append(eventsList);
 }
+
+function populateList(response) {
+  for (var i = 0; i < response.events.length; i++) {
+      var div = $("<div>");
+      var row = $("<div>");
+      var title= $("<div>");
+
+      row.addClass("eventContainer")
+      title.addClass("title")
+      div.addClass("eventButton");
+
+
+      var event = response.events[i];
+      
+      title.text(event.title);
+      row.append(title);
+      div.append(row);
+       $(".events").append(div);
+  }
+ 
+}
+
 
