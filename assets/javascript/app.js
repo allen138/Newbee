@@ -1,71 +1,60 @@
 
 $(document).ready(function() {
-/**
- * 
- * GLOBALS
- */
-var config = {
-  apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
-  authDomain: "group-project-4da86.firebaseapp.com",
-  databaseURL: "https://group-project-4da86.firebaseio.com",
-  projectId: "group-project-4da86",
-  storageBucket: "group-project-4da86.appspot.com",
-  messagingSenderId: "847074672907"
-};
-firebase.initializeApp(config);
-
-var database = firebase.database();
-
-/**
- *  geoIP defaults to empty string
- *  rangeInMile defaults to 10
- *  sortField defaults to datetime_local
- *  sortOrder defaults to desc the other option is asc
- */
-var seatgeek = {
-  url : "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
-  geoIP : "",
-  rangeInMiles : 10,
-  sortField : "datetime_local",
-  sortOrder : "desc",
-  setGeoIP : function() {
-    $.getJSON('http://ipinfo.io', function (data) {
-      this.geoIP = data.ip;
-    });
-  },
-  getEvents : function(rangeInMile,isAsc) {
-    // validation
-    this.rangeInMiles
-    this.setGeoIP;
-    if ( isAsc ) {
-      this.sortOrder = true;
-    } else {
-      this.sortOrder = false;
+  /**
+   * 
+   * GLOBALS
+   */
+  
+  //  Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
+    authDomain: "group-project-4da86.firebaseapp.com",
+    databaseURL: "https://group-project-4da86.firebaseio.com",
+    projectId: "group-project-4da86",
+    storageBucket: "group-project-4da86.appspot.com",
+    messagingSenderId: "847074672907"
+  };
+  firebase.initializeApp(config);
+  
+  var database = firebase.database();
+  
+  /**
+   *  geoIP defaults to empty string
+   *  rangeInMile defaults to 10
+   *  sortField defaults to datetime_local
+   *  sortOrder defaults to desc the other option is asc
+   */
+  var seatgeek = {
+    url : "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
+    geoIP : "",
+    rangeInMiles : 10,
+    sortField : "datetime_local",
+    sortOrder : "desc",
+    setGeoIP : function() {
+      $.getJSON('http://ipinfo.io', function (data) {
+        this.geoIP = data.ip;
+      });
+    },
+    getEvents : function(rangeInMile,isAsc) {
+      // validation
+      this.rangeInMiles
+      //this.setGeoIP;
+      if ( isAsc ) {
+        this.sortOrder = "asc";
+      } else {
+        this.sortOrder = "desc";
+      }
+      // api
+      console.log(seatgeek.url );
+      $.ajax({
+        url : this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
+        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
+        method : "GET"
+      }).then(function(res){
+        return res;
+      });
     }
-    // api
-    $.ajax({
-      url : this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
-      "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
-      method : "GET"
-    }).then(function(res){
-      return res;
-    });
-  }
-  
-/**
-* testing
-*/
-// seatgeek.geoIP = "73.241.184.21";
-  
-};
-
-/**
- * 
- * END OF GLOBALS
- */
-/**
- * sample api : https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA&geoip=73.241.184.216&range=12mi&sort=datetime_local.desc
- */
+  };    
 
 // click function rendering search input. 
 $("#search").on("click", function (event) {
@@ -73,12 +62,16 @@ $("#search").on("click", function (event) {
   console.log("clicked");
   var search = $("input:checked").val();
   console.log(search);
+<<<<<<< HEAD
+  console.log(seatgeek);
+=======
 
   var data = {
     event:search
   }
 
   pushChildFB(data);
+>>>>>>> afbddf71a8659342783daa4da075f38c5cd4a1bf
   
   // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
 
@@ -185,4 +178,5 @@ var deleteLocalStorage = function(key){
 
 });
 >>>>>>> afbddf71a8659342783daa4da075f38c5cd4a1bf
+
 
