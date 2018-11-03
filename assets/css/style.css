@@ -1,5 +1,10 @@
 /* style.css */
 
+body{
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 30px;
+}
+
 .jumbotron {
     margin-bottom: 0px;
 }
@@ -7,7 +12,8 @@
     font-family: 'Oswald', sans-serif;
 }
 .header{
-    font-family: 'Poor Story', cursive;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 50px;
 }
 input {
     margin-right: 10px;

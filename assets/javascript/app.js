@@ -1,36 +1,65 @@
-//  Initialize Firebase
-var config = {
-  apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
-  authDomain: "group-project-4da86.firebaseapp.com",
-  databaseURL: "https://group-project-4da86.firebaseio.com",
-  projectId: "group-project-4da86",
-  storageBucket: "group-project-4da86.appspot.com",
-  messagingSenderId: "847074672907"
-};
-firebase.initializeApp(config);
 
-var database = firebase.database();
-var ip = "";
-getIP();
-function getIP() {
-    $.getJSON('http://ipinfo.io', function (data) {
-        ip = data.ip;
-        getEvents();
-        return ip;
-    });
-}
-function getEvents() {
-    var client_id = "MTM3Njk0OTN8MTU0MTEyNjYzMS42OQ";
-    var geoAPI = "geoip=" + ip;
-    var range = "range=15mi";
-    var url = "https://api.seatgeek.com/2/events?client_id=" + client_id + "&" + geoAPI+"&"+range;
-    $.ajax({
-        url: url,
-        method: "GET"
-    }).then(function (response) {
-        console.log(response);
-    });
-}
+$(document).ready(function() {
+  /**
+   * 
+   * GLOBALS
+   */
+  
+  //  Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
+    authDomain: "group-project-4da86.firebaseapp.com",
+    databaseURL: "https://group-project-4da86.firebaseio.com",
+    projectId: "group-project-4da86",
+    storageBucket: "group-project-4da86.appspot.com",
+    messagingSenderId: "847074672907"
+  };
+  firebase.initializeApp(config);
+  
+  var database = firebase.database();
+  
+  /**
+   *  geoIP defaults to empty string
+   *  rangeInMile defaults to 10
+   *  sortField defaults to datetime_local
+   *  sortOrder defaults to desc the other option is asc
+   */
+  var seatgeek = {
+    url : "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
+    rangeInMiles : 10,
+    sortField : "datetime_local",
+    sortOrder : "desc",
+    getEvents : function(rangeInMile,isAsc) {
+      // validation
+      this.rangeInMiles = rangeInMile;
+      // sort order 
+      if ( isAsc ) {
+        this.sortOrder = "asc";
+      } else {
+        this.sortOrder = "desc";
+      }
+      // api
+     var eres = null; 
+     $.ajax({
+        url : "https://api.ipify.org/?format=json",
+        method : "GET"
+      }).then(function(res){
+        var ip = res.ip;
+        console.log(ip);
+        console.log("&geoip=" + ip+ "&range=");
+        console.log(seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
+        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder);
+        $.ajax({
+          url : seatgeek.url + "&geoip=" + ip+ "&range=" + seatgeek.rangeInMiles + "mi" +
+          "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
+          method : "GET"
+        }).then(function(res){        
+          eres = res.events;
+          console.log(res.events);
+        });
+      });
+    }
+  };    
 
 // click function rendering search input. 
 $("#search").on("click", function (event) {
@@ -41,6 +70,7 @@ $("#search").on("click", function (event) {
   });
 });
 // function to render api results to ui
+
 function renderResults(results) {
 
   var events = $("<ul>");
@@ -56,4 +86,72 @@ function renderResults(results) {
 
   events.append(eventsList);
 }
+
+function populateList(response) {
+  for (var i = 0; i < response.events.length; i++) {
+      var div = $("<div>");
+      var row = $("<div>");
+      var title= $("<div>");
+
+      row.addClass("eventContainer")
+      title.addClass("title")
+      div.addClass("eventButton");
+
+
+      var event = response.events[i];
+      
+      title.text(event.title);
+      row.append(title);
+      div.append(row);
+       $(".events").append(div);
+  }
+ 
+}
+
+/********** Storage Helper's ************/
+
+/* Get's all values from Fire Base */
+var getAllValuesFB = function () {
+
+  database.ref().on("value", function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+          var childData = childSnapshot.val();
+          console.log(childData);
+        },function (errorObject) {
+          console.log("Error " + errorObject.code)
+        });
+    });
+};
+
+/* Get's child from Fire Base */
+var checkChildAdded = function(){
+
+      database.ref().on("child_added", function (snapshot) {
+        var val = snapshot.val(); 
+        console.log(val);   
+
+    }, function (errorObject) {
+        console.log("Error " + errorObject.code);
+    });
+
+}
+
+
+/* add an item to the local storage */
+var setLocalStorage = function (key,val){
+  localStorage.setItem(key,value);
+};
+
+/* retreives an item from the local storage based on the key */
+var getLocalStorage = function(key){
+   localStorage.getItem(key);
+}
+
+/* removes an item from the local storage based on the key */
+var deleteLocalStorage = function(key){
+   localStorage.removeItem(key);
+}
+
+});
+
 
