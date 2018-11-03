@@ -62,7 +62,16 @@ $("#search").on("click", function (event) {
   console.log("clicked");
   var search = $("input:checked").val();
   console.log(search);
+<<<<<<< HEAD
   console.log(seatgeek);
+=======
+
+  var data = {
+    event:search
+  }
+
+  pushChildFB(data);
+>>>>>>> afbddf71a8659342783daa4da075f38c5cd4a1bf
   
   // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
 
@@ -107,7 +116,7 @@ var getAllValuesFB = function () {
 };
 
 /* Get's child from Fire Base */
-var checkChildAdded = function(){
+var getChildAdded = function(){
 
       database.ref().on("child_added", function (snapshot) {
         var val = snapshot.val(); 
@@ -117,6 +126,14 @@ var checkChildAdded = function(){
         console.log("Error " + errorObject.code);
     });
 
+}
+
+/** Push Data to FB */
+
+var pushChildFB = function(obj){
+  database.ref().push({
+    event: obj.event
+  });
 }
 
 
