@@ -1,4 +1,4 @@
-//  Initialize Firebase
+//Initialize Firebase
 var config = {
   apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
   authDomain: "group-project-4da86.firebaseapp.com",
@@ -17,6 +17,7 @@ $("#search").on("click", function (event) {
   console.log("clicked");
   var search = $("input:checked").val();
   console.log(search);
+  
   // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
 
   // $.ajax({
@@ -44,3 +45,46 @@ function renderResults(results) {
   events.append(eventsList);
 }
 
+/********** Storage Helper's ************/
+
+/* Get's all values from Fire Base */
+var getAllValuesFB = function () {
+
+  database.ref().on("value", function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+          var childData = childSnapshot.val();
+          console.log(childData);
+        },function (errorObject) {
+          console.log("Error " + errorObject.code)
+        });
+    });
+};
+
+/* Get's child from Fire Base */
+var checkChildAdded = function(){
+
+      database.ref().on("child_added", function (snapshot) {
+        var val = snapshot.val(); 
+        console.log(val);   
+
+    }, function (errorObject) {
+        console.log("Error " + errorObject.code);
+    });
+
+}
+
+
+/* add an item to the local storage */
+var setLocalStorage = function (key,val){
+  localStorage.setItem(key,value);
+};
+
+/* retreives an item from the local storage based on the key */
+var getLocalStorage = function(key){
+   localStorage.getItem(key);
+}
+
+/* removes an item from the local storage based on the key */
+var deleteLocalStorage = function(key){
+   localStorage.removeItem(key);
+}
