@@ -26,13 +26,12 @@ $(document).ready(function() {
    */
   var seatgeek = {
     url : "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
-    geoIP : "",
     rangeInMiles : 10,
     sortField : "datetime_local",
     sortOrder : "desc",
     getEvents : function(rangeInMile,isAsc) {
       // validation
-      this.rangeInMiles
+      this.rangeInMiles = rangeInMile;
       // sort order 
       if ( isAsc ) {
         this.sortOrder = "asc";
@@ -46,9 +45,11 @@ $(document).ready(function() {
         url : "http://ipinfo.io/json",
         method : "GET"
       }).then(function(res){
-        this.geoIP = res.ip;
+        var ip = res.ip;
+        console.log(res.ip);
+        console.log("&geoip=" + ip+ "&range=");
         $.ajax({
-          url : this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
+          url : seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
           "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
           method : "GET"
         }).then(function(res){        
@@ -64,8 +65,8 @@ $("#search").on("click", function (event) {
   console.log("clicked");
   var search = $("input:checked").val();
   console.log(search);
-  console.log(seatgeek.geoIP);
-  console.log(seatgeek.getEvents(10,false));
+  console.log(seatgeek.getEvents(11,false));
+  console.log(seatgeek);
   
   // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
 
@@ -95,7 +96,6 @@ function renderResults(results) {
   events.append(eventsList);
 }
 
-<<<<<<< HEAD
 function populateList(response) {
   for (var i = 0; i < response.events.length; i++) {
       var div = $("<div>");
@@ -117,7 +117,6 @@ function populateList(response) {
  
 }
 
-=======
 /********** Storage Helper's ************/
 
 /* Get's all values from Fire Base */
@@ -163,6 +162,5 @@ var deleteLocalStorage = function(key){
 }
 
 });
->>>>>>> afbddf71a8659342783daa4da075f38c5cd4a1bf
 
 
