@@ -1,71 +1,65 @@
 
 $(document).ready(function() {
-/**
- * 
- * GLOBALS
- */
-var config = {
-  apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
-  authDomain: "group-project-4da86.firebaseapp.com",
-  databaseURL: "https://group-project-4da86.firebaseio.com",
-  projectId: "group-project-4da86",
-  storageBucket: "group-project-4da86.appspot.com",
-  messagingSenderId: "847074672907"
-};
-firebase.initializeApp(config);
-
-var database = firebase.database();
-
-/**
- *  geoIP defaults to empty string
- *  rangeInMile defaults to 10
- *  sortField defaults to datetime_local
- *  sortOrder defaults to desc the other option is asc
- */
-var seatgeek = {
-  url : "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
-  geoIP : "",
-  rangeInMiles : 10,
-  sortField : "datetime_local",
-  sortOrder : "desc",
-  setGeoIP : function() {
-    $.getJSON('http://ipinfo.io', function (data) {
-      this.geoIP = data.ip;
-    });
-  },
-  getEvents : function(rangeInMile,isAsc) {
-    // validation
-    this.rangeInMiles
-    this.setGeoIP;
-    if ( isAsc ) {
-      this.sortOrder = true;
-    } else {
-      this.sortOrder = false;
+  /**
+   * 
+   * GLOBALS
+   */
+  
+  //  Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
+    authDomain: "group-project-4da86.firebaseapp.com",
+    databaseURL: "https://group-project-4da86.firebaseio.com",
+    projectId: "group-project-4da86",
+    storageBucket: "group-project-4da86.appspot.com",
+    messagingSenderId: "847074672907"
+  };
+  firebase.initializeApp(config);
+  
+  var database = firebase.database();
+  
+  /**
+   *  geoIP defaults to empty string
+   *  rangeInMile defaults to 10
+   *  sortField defaults to datetime_local
+   *  sortOrder defaults to desc the other option is asc
+   */
+  var seatgeek = {
+    url : "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
+    rangeInMiles : 10,
+    sortField : "datetime_local",
+    sortOrder : "desc",
+    getEvents : function(rangeInMile,isAsc) {
+      // validation
+      this.rangeInMiles = rangeInMile;
+      // sort order 
+      if ( isAsc ) {
+        this.sortOrder = "asc";
+      } else {
+        this.sortOrder = "desc";
+      }
+      // api
+     var eres = null; 
+     $.ajax({
+        url : "https://api.ipify.org/?format=json",
+        method : "GET"
+      }).then(function(res){
+        var ip = res.ip;
+        console.log(ip);
+        console.log("&geoip=" + ip+ "&range=");
+        console.log(seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
+        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder);
+        $.ajax({
+          url : seatgeek.url + "&geoip=" + ip+ "&range=" + seatgeek.rangeInMiles + "mi" +
+          "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
+          method : "GET"
+        }).then(function(res){        
+          eres = res.events;
+          console.log(res.events);
+        });
+      });
     }
-    // api
-    $.ajax({
-      url : this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
-      "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
-      method : "GET"
-    }).then(function(res){
-      return res;
-    });
-  }
-  
-/**
-* testing
-*/
-// seatgeek.geoIP = "73.241.184.21";
-  
-};
-
-/**
- * 
- * END OF GLOBALS
- */
-/**
- * sample api : https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA&geoip=73.241.184.216&range=12mi&sort=datetime_local.desc
- */
+  };    
 
 // click function rendering search input. 
 $("#search").on("click", function (event) {
@@ -73,12 +67,7 @@ $("#search").on("click", function (event) {
   console.log("clicked");
   var search = $("input:checked").val();
   console.log(search);
-
-  var data = {
-    event:search
-  }
-
-  pushChildFB(data);
+  console.log(seatgeek.getEvents(11,false));
   
   // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
 
@@ -91,6 +80,7 @@ $("#search").on("click", function (event) {
   // });
 });
 // function to render api results to ui
+
 function renderResults(results) {
 
   var events = $("<ul>");
@@ -105,6 +95,27 @@ function renderResults(results) {
   eventsList.append("<h5>" + eventDate + "</h5>");
 
   events.append(eventsList);
+}
+
+function populateList(response) {
+  for (var i = 0; i < response.events.length; i++) {
+      var div = $("<div>");
+      var row = $("<div>");
+      var title= $("<div>");
+
+      row.addClass("eventContainer")
+      title.addClass("title")
+      div.addClass("eventButton");
+
+
+      var event = response.events[i];
+      
+      title.text(event.title);
+      row.append(title);
+      div.append(row);
+       $(".events").append(div);
+  }
+ 
 }
 
 /********** Storage Helper's ************/
@@ -123,7 +134,7 @@ var getAllValuesFB = function () {
 };
 
 /* Get's child from Fire Base */
-var getChildAdded = function(){
+var checkChildAdded = function(){
 
       database.ref().on("child_added", function (snapshot) {
         var val = snapshot.val(); 
@@ -133,14 +144,6 @@ var getChildAdded = function(){
         console.log("Error " + errorObject.code);
     });
 
-}
-
-/** Push Data to FB */
-
-var pushChildFB = function(obj){
-  database.ref().push({
-    event: obj.event
-  });
 }
 
 
@@ -160,4 +163,5 @@ var deleteLocalStorage = function(key){
 }
 
 });
+
 
