@@ -41,11 +41,11 @@ $(document).ready(function() {
       // api
      var eres = null; 
      $.ajax({
-        url : "http://ipinfo.io/json",
+        url : "https://api.ipify.org/?format=json",
         method : "GET"
       }).then(function(res){
         var ip = res.ip;
-        console.log(res.ip);
+        console.log(ip);
         console.log("&geoip=" + ip+ "&range=");
         console.log(seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
         "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder);
@@ -54,8 +54,8 @@ $(document).ready(function() {
           "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
           method : "GET"
         }).then(function(res){        
-          eres = res;
-          console.log(res);
+          eres = res.events;
+          console.log(res.events);
         });
       });
     }
