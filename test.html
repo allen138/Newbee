@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -15,7 +16,67 @@
 
     </div>
     <script>
-        
+        var ip = "";
+        getIP();
+
+
+
+
+        function getIP() {
+            $.getJSON('http://ipinfo.io', function (data) {
+                ip = data.ip;
+                getEvents();
+                return ip;
+            });
+        }
+
+        function getEvents() {
+            var client_id = "MTM3Njk0OTN8MTU0MTEyNjYzMS42OQ";
+            var geoAPI = "geoip=" + ip;
+            var range = "range=15mi";
+            var url = "https://api.seatgeek.com/2/events?client_id=" + client_id + "&" + geoAPI;
+            $.ajax({
+                url: url,
+                method: "GET"
+            }).then(function (response) {
+                console.log(response);
+            });
+        }
+
+
+
+
+    </script>
+    <script>
+       /* function getLocation() {
+
+
+
+
+            if (navigator.geolocation) {
+                (navigator.geolocation.getCurrentPosition(showPosition));
+
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+            var geocoder = new google.maps.Geocoder;
+
+            var latlng = { lat: position.coords.latitude, lng: position.coords.longitude };
+
+
+            geocoder.geocode({ 'location': latlng }, function (results, status) {
+                if (status === 'OK') {
+                    console.log(results);
+                } else {
+                    window.alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }
+        getLocation();*/
 
     </script>
 </body>
