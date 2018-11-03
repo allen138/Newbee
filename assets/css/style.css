@@ -1,10 +1,16 @@
 /* style.css */
 
+body{
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 30px;
+}
+
 .jumbotron {
     margin-bottom: 0px;
 }
 .header{
-    font-family: 'Poor Story', cursive;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 50px;
 }
 input {
     margin-right: 10px;
@@ -26,7 +32,7 @@ footer {
     background-image: url(../images/full-bloom.png);
 }
 .my-events{
-    font-family: 'Poor Story', cursive;
+    font-family: 'Gloria Hallelujah', cursive;
 }
 .events-title {
     padding-bottom: 0;
