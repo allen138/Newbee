@@ -26,10 +26,11 @@ $(document).ready(function() {
    */
   var seatgeek = {
     url : "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
-    rangeInMiles : 10,
+    rangeInMiles : 0,
     sortField : "datetime_local",
     sortOrder : "desc",
-    getEvents : function(rangeInMile,isAsc) {
+    events : [],
+    getEvents : function(rangeInMile,isAsc,taxonomies) {
       // validation
       this.rangeInMiles = rangeInMile;
       // sort order 
@@ -39,35 +40,46 @@ $(document).ready(function() {
         this.sortOrder = "desc";
       }
       // api
-     var eres = null; 
      $.ajax({
         url : "https://api.ipify.org/?format=json",
         method : "GET"
       }).then(function(res){
         var ip = res.ip;
-        console.log(ip);
-        console.log("&geoip=" + ip+ "&range=");
-        console.log(seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
-        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder);
+        var taxonomiesStr = '';
+
+        for( var i = 0; i < taxonomies.length; i++) {
+          taxonomiesStr = taxonomiesStr + "&taxonomies.name=" + taxonomies[i];
+        }
+
         $.ajax({
           url : seatgeek.url + "&geoip=" + ip+ "&range=" + seatgeek.rangeInMiles + "mi" +
-          "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
+          "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr,
           method : "GET"
-        }).then(function(res){        
-          eres = res.events;
-          console.log(res.events);
+        }).then(function(res){       
+          seatgeek.setEvents(res.events);
         });
+
       });
+    },
+    setEvents : function(events){
+
+      this.events = events;
     }
   };    
 
 // click function rendering search input. 
 $("#search").on("click", function (event) {
   event.preventDefault();
+  var taxonomies = [];
   $.each($("input:checked"), function() {
     var search = $(this).val();  
+    taxonomies.push(search);
     console.log(search);
   });
+
+  seatgeek.getEvents(11,false,taxonomies);
+  console.log(seatgeek);
+  renderResults(seatgeek);``  
 });
 // function to render api results to ui
 
@@ -78,7 +90,7 @@ function renderResults(results) {
   $(".events").append(events);
 
   var title = results.events.title;
-  var eventsList = $("<li class='event-list-title'");
+  var eventsList = $("<li class='event-list-title'></li>");
   eventsList.append("<span class='label label-primary'>" + title + "</span>");
 
   var eventDate = results.events.datetime_local;
