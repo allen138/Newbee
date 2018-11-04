@@ -1,22 +1,31 @@
 /* style.css */
 
-body{
+/* body{
     font-family: 'Gloria Hallelujah', cursive;
     font-size: 30px;
-}
+} */
 
 .jumbotron {
     margin-bottom: 0px;
 }
+.navbar {
+    font-family: 'Oswald', sans-serif;
+}
 .header{
-    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Poor Story', cursive;
     font-size: 50px;
 }
 input {
     margin-right: 10px;
     margin-left: 10px;
 }
+.lead, 
+.input-group-text,
+.response {
+    font-family: 'Gloria Hallelujah', cursive;
+}
 #search {
+    font-family: 'Shadows Into Light', cursive;
     margin-left: 15px;
     padding-left: 10px;
     padding-right: 10px;
@@ -24,15 +33,18 @@ input {
     cursor: pointer;
 }
 footer {
+    margin-bottom: 0;
     padding: 20px;
     text-align: center;
+    font-family: 'Oswald', sans-serif;
     background-color: #e9ecef;
 }
 .response {
     background-image: url(../images/full-bloom.png);
 }
 .my-events{
-    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Poor Story', cursive;
+    margin-bottom: 0;
 }
 .events-title {
     padding-bottom: 0;
@@ -41,17 +53,66 @@ footer {
     width: 960px;
     margin: 0 auto;
 }
-
-
-
-.eventContainer{
-    background-color: lightskyblue;
-    height:50px;
-    width: 100%;
+.form-check-label input{
+  display: none;
 }
-.title{
-    border: 1px solid #000000;
- 
-    vertical-align: middle;
-    text-align: center;
+.form-check-label {
+    display: inline-block;
+    padding-left: 26px;
+    position: relative;
+}
+.form-check-label .checkmark{
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border: 1px solid black;
+    border-radius: 4px;
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+}
+.form-check-label .checkmark:hover {
+    background-color: lightgrey;
+}
+.form-check-label input:checked + .checkmark{
+    background-color: rgb(62, 62, 238);
+}
+.form-check-label input:checked + .checkmark:after{
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 7px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* sign up page */
+
+#sign-up-form {
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color:white;
+    padding: 15px;
+    font-family: 'Gloria Hallelujah', cursive;
+}
+#sign-up-page {
+    background-image: url(../images/concrete-texture.png);
+}
+#icon {
+    margin: 20px;
+    height: 150px;
+    width: 150px;
+}
+#sign-up-form-title{
+    font-family: 'Poor Story', cursive;
+    font-size: 36px;
+}
+#username, #password{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
