@@ -1,10 +1,10 @@
 
-$(document).ready(function() {
+$(document).ready(function () {
   /**
    * 
    * GLOBALS
    */
-  
+
   //  Initialize Firebase
   var config = {
     apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
@@ -15,98 +15,86 @@ $(document).ready(function() {
     messagingSenderId: "847074672907"
   };
   firebase.initializeApp(config);
-  
+
   var database = firebase.database();
-  
+
   /**
    *  geoIP defaults to empty string
    *  rangeInMile defaults to 10
    *  sortField defaults to datetime_local
    *  sortOrder defaults to desc the other option is asc
    */
+
+  var output = "";
   var seatgeek = {
-    url : "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
-    geoIP : "",
-    rangeInMiles : 10,
-    sortField : "datetime_local",
-    sortOrder : "desc",
-    setGeoIP : function() {
-      $.getJSON('http://ipinfo.io', function (data) {
-        this.geoIP = data.ip;
-      });
-    },
-    getEvents : function(rangeInMile,isAsc) {
-      // validation
-      this.rangeInMiles
-      //this.setGeoIP;
-      if ( isAsc ) {
-        this.sortOrder = "asc";
-      } else {
-        this.sortOrder = "desc";
-      }
-      // api
-      console.log(seatgeek.url );
-      $.ajax({
-        url : this.url + "&geoip=" + this.geoIP + "&range=" + this.rangeInMiles + "mi" +
-        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
-        method : "GET"
-      }).then(function(res){
-        return res;
-      });
-    }
-  };    
+    url: "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA",
+    geoIP: "",
+    rangeInMiles: 10,
+    sortField: "datetime_local",
+    sortOrder: "desc",
+  };
+  
 
-// click function rendering search input. 
-$("#search").on("click", function (event) {
-  event.preventDefault();
-  console.log("clicked");
-  var search = $("input:checked").val();
-  console.log(search);
-<<<<<<< HEAD
-  console.log(seatgeek);
-=======
-
-  var data = {
-    event:search
+  async function setGeoIP() {
+    $.getJSON('http://ipinfo.io', function (data) {
+      return data.ip,seatgeek;
+    });
   }
 
-  pushChildFB(data);
->>>>>>> afbddf71a8659342783daa4da075f38c5cd4a1bf
-  
-  // var queryURL = "https://api.seatgeek.com/2/events?client_id=MTM3MzYxMTF8MTU0MDg2OTY4OS40NQ";
+  async function getEvents (geoIP, seatgeek) {
+    seatgeek.geoIP = geoIP;
+ 
+    console.log(seatgeek.url);
+    $.ajax({
+      url: seatgeek.url + "&geoip=" + seatgeek.geoIP + "&range=" + seatgeek.rangeInMiles + "mi" +
+        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder,
+      method: "GET"
+    }).then(function (res) {
+      output = res;
+      console.log(output);
+      return res;
+    });
+  }
 
-  // $.ajax({
-  //   url: queryURL,
-  //   method: "GET",
-  // }).then(function (response) {
-  //   console.log(response);
-    
-  // });
-});
-// function to render api results to ui
+  // click function rendering search input. 
+  $("#search").on("click", function (event) {
+    event.preventDefault();
+    console.log("clicked");
+    var search = $("input:checked").val();
 
-function renderResults(results) {
+    getEvents(setGeoIP(),seatgeek);
 
-  var events = $("<ul>");
-  events.addClass("list-group");
-  $(".events").append(events);
+    console.log(output);
+    var data = {
+      event: search
+    }
 
-  var title = results.events.title;
-  var eventsList = $("<li class='event-list-title'");
-  eventsList.append("<span class='label label-primary'>" + title + "</span>");
+    //pushChildFB(data);
 
-  var eventDate = results.events.datetime_local;
-  eventsList.append("<h5>" + eventDate + "</h5>");
+  });
+  // function to render api results to ui
 
-  events.append(eventsList);
-}
+  function renderResults(results) {
 
-<<<<<<< HEAD
-function populateList(response) {
-  for (var i = 0; i < response.events.length; i++) {
+    var events = $("<ul>");
+    events.addClass("list-group");
+    $(".events").append(events);
+
+    var title = results.events.title;
+    var eventsList = $("<li class='event-list-title'");
+    eventsList.append("<span class='label label-primary'>" + title + "</span>");
+
+    var eventDate = results.events.datetime_local;
+    eventsList.append("<h5>" + eventDate + "</h5>");
+
+    events.append(eventsList);
+  }
+
+  function populateList(response) {
+    for (var i = 0; i < response.events.length; i++) {
       var div = $("<div>");
       var row = $("<div>");
-      var title= $("<div>");
+      var title = $("<div>");
 
       row.addClass("eventContainer")
       title.addClass("title")
@@ -114,69 +102,12 @@ function populateList(response) {
 
 
       var event = response.events[i];
-      
+
       title.text(event.title);
       row.append(title);
       div.append(row);
-       $(".events").append(div);
+      $(".events").append(div);
+    }
+
   }
- 
-}
-
-=======
-/********** Storage Helper's ************/
-
-/* Get's all values from Fire Base */
-var getAllValuesFB = function () {
-
-  database.ref().on("value", function(snapshot) {
-      snapshot.forEach(function(childSnapshot) {
-          var childData = childSnapshot.val();
-          console.log(childData);
-        },function (errorObject) {
-          console.log("Error " + errorObject.code)
-        });
-    });
-};
-
-/* Get's child from Fire Base */
-var getChildAdded = function(){
-
-      database.ref().on("child_added", function (snapshot) {
-        var val = snapshot.val(); 
-        console.log(val);   
-
-    }, function (errorObject) {
-        console.log("Error " + errorObject.code);
-    });
-
-}
-
-/** Push Data to FB */
-
-var pushChildFB = function(obj){
-  database.ref().push({
-    event: obj.event
-  });
-}
-
-
-/* add an item to the local storage */
-var setLocalStorage = function (key,val){
-  localStorage.setItem(key,value);
-};
-
-/* retreives an item from the local storage based on the key */
-var getLocalStorage = function(key){
-   localStorage.getItem(key);
-}
-
-/* removes an item from the local storage based on the key */
-var deleteLocalStorage = function(key){
-   localStorage.removeItem(key);
-}
-
 });
->>>>>>> afbddf71a8659342783daa4da075f38c5cd4a1bf
-
-
