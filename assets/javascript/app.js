@@ -60,6 +60,7 @@ $(document).ready(function () {
           method: "GET"
         }).then(function (res) {
           seatgeek.setEvents(res.events);
+          populateList(seatgeek);
         });
 
       });
@@ -81,9 +82,16 @@ $(document).ready(function () {
     });
 
     seatgeek.getEvents(11, false, taxonomies);
-    console.log(seatgeek);
-    renderResults(seatgeek);
+ 
+    //console.log(seatgeek.events);
+    //populateList(seatgeek);
   });
+
+
+  /*************************************************** */
+    //List Populators and event click functions
+  /*************************************************** */
+
   // function to render api results to ui
   function renderResults(seatgeek) {
     for (var i = 0; i < seatgeek.events.length; i++) {
@@ -106,11 +114,15 @@ $(document).ready(function () {
   };
 
   function populateList(response) {
+    
     for (var i = 0; i < response.events.length; i++) {
+      
       var div = $("<div>");
       var row = $("<div>");
       var title = $("<div>");
+      var time = $("<div>");
 
+      time.text(seatgeek.events[i].datetime_local);
       row.addClass("eventContainer")
       title.addClass("title")
       div.addClass("eventButton");
@@ -118,13 +130,28 @@ $(document).ready(function () {
 
       var event = response.events[i];
 
+      setLocalStorage(title,event);
+
       title.text(event.title);
       row.append(title);
       div.append(row);
+      row.append(time);
       $(".events").append(div);
     }
 
+    $(".eventContainer").on("click",function(event){
+      var self = $(this);
+      var name  = self.find("title").text();
+      
+    });
   }
+
+  
+
+
+  /*************************************************** */
+    //End List Populators and event click functions
+  /*************************************************** */
 
   /********** Storage Helper's ************/
 

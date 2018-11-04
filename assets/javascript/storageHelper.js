@@ -17,7 +17,7 @@ var getAllItemsFB = function(){
 
 /* add an item to the local storage */
 var setLocalStorage = function (key,val){
-   localStorage.setItem(key,value);
+   localStorage.setItem(key,val);
 };
 
 /* retreives an item from the local storage based on the key */
