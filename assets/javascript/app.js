@@ -30,6 +30,7 @@ $(document).ready(function() {
     sortField : "datetime_local",
     sortOrder : "desc",
     events : [],
+    urlStr : "",
     getEvents : function(rangeInMile,isAsc,taxonomies) {
       // validation
       this.rangeInMiles = rangeInMile;
@@ -39,6 +40,7 @@ $(document).ready(function() {
       } else {
         this.sortOrder = "desc";
       }
+
       // api
      $.ajax({
         url : "https://api.ipify.org/?format=json",
@@ -46,11 +48,11 @@ $(document).ready(function() {
       }).then(function(res){
         var ip = res.ip;
         var taxonomiesStr = '';
-
         for( var i = 0; i < taxonomies.length; i++) {
           taxonomiesStr = taxonomiesStr + "&taxonomies.name=" + taxonomies[i];
         }
-
+        seatgeek.urlStr = seatgeek.url + "&geoip=" + ip+ "&range=" + seatgeek.rangeInMiles + "mi" +
+        "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr;
         $.ajax({
           url : seatgeek.url + "&geoip=" + ip+ "&range=" + seatgeek.rangeInMiles + "mi" +
           "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr,
