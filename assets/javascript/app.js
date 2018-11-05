@@ -23,6 +23,9 @@ $(document).ready(function () {
     messagingSenderId: "830770899521"
   };
 
+  var loggedInUserID = undefined;
+  var loggedInUserName = undefined;
+
   const eventDB = firebase.initializeApp(eventConfig);
   var eventDatabase = firebase.database(eventDB);
 
@@ -81,6 +84,32 @@ $(document).ready(function () {
       this.events = events;
     }
   };
+
+  //click sign-in
+
+  $('#sign-in').on("click", function (event){
+    event.preventDefault();
+    var username = $('#username').val().trim();
+    var password = $('#password').val().trim();
+    var isUser = checkExistingUser(username,password);
+    console.log(isUser);
+    if(loggedInUserName === undefined){
+      console.log("Enter a valid Username and Password");
+    }
+  });
+
+  $('#sigup-submit').on("click", function (event){
+    event.preventDefault();
+    var userID = guidGenerator();
+    var userName = $("#signup-username").val();
+    var password = $("#signup-password").val();
+    var data = {
+      userID:userID,
+      userName:userName,
+      password:password
+    }
+    createUser(data);
+  });
 
   // click function rendering search input. 
   $("#search").on("click", function (event) {
@@ -168,7 +197,7 @@ $(document).ready(function () {
     var S4 = function() {
        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     };
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    return (S4()+S4()+S4()+S4()+S4()+S4()+S4()+S4());
 }
 
 /********** Storage Helper's ************/
@@ -183,19 +212,22 @@ $(document).ready(function () {
       });
   }
 
-  /* retreives a the ID from userDB using name */ 
+  /* retreives a the ID from userDB using name and check if the password is correct */ 
 
-  var getUserID = function(name){
-
-      var data = userDatabase.ref().orderByChild('userName').equalTo(name).on("value", function(snapshot) {
-        console.log(snapshot.val().userID);
-
-        snapshot.forEach(function(data) {
-            console.log(data.val().userID);
-            console.log(data.val().userName);
-            console.log(data.val().password);
-        });
+  var checkExistingUser = function (username,password){
+    var isUser = false;
+    var data = userDatabase.ref().orderByChild('userName').equalTo(username).on("value", function(snapshot) {
+      
+      snapshot.forEach(function(data) {
+        if(password === data.val().password ){
+          console.log("User and Password Match");
+          loggedInUserID = data.val().userID;
+          loggedInUserName = data.val().userName;
+          isUser = true;
+        }
       });
+    });
+    return isUser;
   }
 
   /* Get's all values from Fire Base */
