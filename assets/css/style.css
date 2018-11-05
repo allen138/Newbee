@@ -49,6 +49,14 @@ footer {
 .events-title {
     padding-bottom: 0;
 }
+.eventContainer:hover {
+    background-color:lightgreen;
+}
+
+
+
+
+
 .container {
     width: 960px;
     margin: 0 auto;

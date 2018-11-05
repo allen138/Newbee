@@ -24,16 +24,18 @@
 
     <script>
         var ip = "";
-        getIP();
+        wut();
+    
 
+        function wut () {
+            getIP().then(getEvents());
+        }
 
-
-
-        function getIP() {
+        async function getIP() {
             $.getJSON('http://ipinfo.io', function (data) {
                 ip = data.ip;
-                console.log(data);
-                getEvents();
+                
+               
                 return ip;
             });
         }
@@ -48,8 +50,6 @@
                 method: "GET"
             }).then(function (response) {
                 console.log(response);
-
-
                 populateList(response);
 
 
