@@ -12,7 +12,7 @@
 
 var getAllItemsFB = function(){
     console.log("FB");
-    var database = firebase.database();
+    var database = firebase.database(config);
 }
 
 /* add an item to the local storage */
