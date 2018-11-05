@@ -68,7 +68,6 @@ $(document).ready(function () {
         });
     },
     setEvents: function (events) {
-
       this.events = events;
     }
   };
@@ -80,7 +79,6 @@ $(document).ready(function () {
     $.each($("input:checked"), function () {
       var search = $(this).val();
       taxonomies.push(search);
-      console.log(search);
     });
 
     seatgeek.getEvents(11, false, taxonomies);
@@ -140,24 +138,51 @@ $(document).ready(function () {
       eventContainer.append(time);
       $(".events").append(eventButton);
     }
-    var key = database.ref("unselectedEvents").set({
+
+    database.ref().set({
       "myEvents": myEvents
     });
 
+    
+
     $(".eventContainer").on("click", function (e) {
       var self = $(this);
-      var name = self.find(".title");
+      var id = parseInt(self.attr("id"));
 
-       var ref = database.ref("unselectedEvents");
-       ref.once("value")
-         .then(function (snapshot) {
-           var key = snapshot.child("event");
-           var value = key.val();
-           console.log(value);
-           });
- 
-         });
- 
+      var ref = database.ref();
+      
+      ref.once("value").then(function (snapshot) {
+        var myEvents = snapshot.child("myEvents").val();
+
+        var elementWithID = myEvents.filter(x => {
+          return x.id === id;
+        })[0];
+        console.log(elementWithID);
+        var index = myEvents.indexOf(elementWithID);
+        console.log(index);
+        myEvents.splice(index,1);
+        console.log(myEvents);
+
+        database.ref().set({
+          "myEvents": myEvents
+        });
+
+
+
+
+        var selectedEvents =   snapshot.child("selectedEvents").val();
+        if (selectedEvents === null){
+          selectedEvents = [];
+        }
+        selectedEvents.push(elementWithID)
+        ref.set({
+          "selectedEvents": selectedEvents
+        });
+
+
+
+      });
+
 
     });
 
