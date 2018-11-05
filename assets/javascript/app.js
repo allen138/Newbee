@@ -129,11 +129,9 @@ $(document).ready(function () {
       title.addClass("title")
       eventButton.addClass("eventButton");
 
-      
       var event = response.events[i];
       var id = event.id;
       eventContainer.attr("id", id);
-      console.log(event);
       myEvents.push(event);
 
       title.text(event.title);
@@ -142,24 +140,24 @@ $(document).ready(function () {
       eventContainer.append(time);
       $(".events").append(eventButton);
     }
-    var key = database.ref("unselectedEvents").push({
+    var key = database.ref("unselectedEvents").set({
       "myEvents": myEvents
     });
 
     $(".eventContainer").on("click", function (e) {
       var self = $(this);
       var name = self.find(".title");
-      /* var ref = database.ref(name.attr("key"));
+
+       var ref = database.ref("unselectedEvents");
        ref.once("value")
          .then(function (snapshot) {
            var key = snapshot.child("event");
            var value = key.val();
-           var key2 = database.ref("selectedEvents").push({
-             "event": value
+           console.log(value);
            });
  
          });
- */
+ 
 
     });
 
