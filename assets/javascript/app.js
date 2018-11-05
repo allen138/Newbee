@@ -13,6 +13,7 @@ $(document).ready(function () {
     storageBucket: "proj-1-8fff4.appspot.com",
     messagingSenderId: "833251081928"
   };
+  firebase.initializeApp(config);
 
 
 
@@ -115,53 +116,53 @@ $(document).ready(function () {
   };
 
   function populateList(response) {
-
+    var myEvents = [];
     for (var i = 0; i < response.events.length; i++) {
 
-      var div = $("<div>");
-      var row = $("<div>");
+      var eventButton = $("<div>");
+      var eventContainer = $("<div>");
       var title = $("<div>");
       var time = $("<div>");
 
       time.text(seatgeek.events[i].datetime_local);
-      row.addClass("eventContainer")
+      eventContainer.addClass("eventContainer")
       title.addClass("title")
-      div.addClass("eventButton");
+      eventButton.addClass("eventButton");
 
-
+      
       var event = response.events[i];
-      var key = database.ref("unselectedEvents").push({
-        "event": event
-      });
-      var keyName = key.path.pieces_[0];
+      var id = event.id;
+      eventContainer.attr("id", id);
+      console.log(event);
+      myEvents.push(event);
 
       title.text(event.title);
-      title.attr("key", keyName);
-      row.append(title);
-      div.append(row);
-      row.append(time);
-      $(".events").append(div);
+      eventContainer.append(title);
+      eventButton.append(eventContainer);
+      eventContainer.append(time);
+      $(".events").append(eventButton);
     }
+    var key = database.ref("unselectedEvents").push({
+      "myEvents": myEvents
+    });
 
     $(".eventContainer").on("click", function (e) {
       var self = $(this);
       var name = self.find(".title");
-      var ref = database.ref(name.attr("key"));
-      ref.once("value")
-        .then(function (snapshot) {
-          var key = snapshot.child("event");
-          var value = key.val();
-          var key2 = database.ref("selectedEvents").push({
-            "event": value
-          });
+      /* var ref = database.ref(name.attr("key"));
+       ref.once("value")
+         .then(function (snapshot) {
+           var key = snapshot.child("event");
+           var value = key.val();
+           var key2 = database.ref("selectedEvents").push({
+             "event": value
+           });
+ 
+         });
+ */
 
-          console.log(key);
-
-
-        });
-
-      
     });
+
   }
 
   /*************************************************** */
@@ -172,37 +173,37 @@ $(document).ready(function () {
 
   /* returns a GUID which will be used as UserID */
   function guidGenerator() {
-    var S4 = function() {
-       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    var S4 = function () {
+      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     };
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-}
-
-/********** Storage Helper's ************/
-
-  /* Creates a User in User DB*/
-  var createUser = function(obj){
-      console.log(obj);
-      userDatabase.ref().push({
-        userID: obj.userID,
-        userName:obj.userName,
-        password:obj.password
-      });
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
   }
 
-  /* retreives a the ID from userDB using name */ 
+  /********** Storage Helper's ************/
 
-  var getUserID = function(name){
+  /* Creates a User in User DB*/
+  var createUser = function (obj) {
+    console.log(obj);
+    userDatabase.ref().push({
+      userID: obj.userID,
+      userName: obj.userName,
+      password: obj.password
+    });
+  }
 
-      var data = userDatabase.ref().orderByChild('userName').equalTo(name).on("value", function(snapshot) {
-        console.log(snapshot.val().userID);
+  /* retreives a the ID from userDB using name */
 
-        snapshot.forEach(function(data) {
-            console.log(data.val().userID);
-            console.log(data.val().userName);
-            console.log(data.val().password);
-        });
+  var getUserID = function (name) {
+
+    var data = userDatabase.ref().orderByChild('userName').equalTo(name).on("value", function (snapshot) {
+      console.log(snapshot.val().userID);
+
+      snapshot.forEach(function (data) {
+        console.log(data.val().userID);
+        console.log(data.val().userName);
+        console.log(data.val().password);
       });
+    });
   }
 
   /* Get's all values from Fire Base */
