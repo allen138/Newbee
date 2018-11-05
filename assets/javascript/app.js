@@ -7,14 +7,16 @@ $(document).ready(function () {
 
   //  Initialize Firebase
   var config = {
-    apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
-    authDomain: "group-project-4da86.firebaseapp.com",
-    databaseURL: "https://group-project-4da86.firebaseio.com",
-    projectId: "group-project-4da86",
-    storageBucket: "group-project-4da86.appspot.com",
-    messagingSenderId: "847074672907"
+    apiKey: "AIzaSyAZ9w3hQPnIWxgY-KKl3awkJirnN5mvG3w",
+    authDomain: "proj-1-8fff4.firebaseapp.com",
+    databaseURL: "https://proj-1-8fff4.firebaseio.com",
+    projectId: "proj-1-8fff4",
+    storageBucket: "proj-1-8fff4.appspot.com",
+    messagingSenderId: "833251081928"
   };
   firebase.initializeApp(config);
+
+
 
   var database = firebase.database();
 
@@ -43,27 +45,28 @@ $(document).ready(function () {
         this.sortOrder = "desc";
       }
       $.getJSON({
-        url : 'http://ipinfo.io',
-        method: "GET"}).
-      then(function (res) {
-        var ip = res.ip;
-        console.log(ip);
-        var taxonomiesStr = '';
-        for (var i = 0; i < taxonomies.length; i++) {
-          taxonomiesStr = taxonomiesStr + "&taxonomies.name=" + taxonomies[i];
-        }
-        seatgeek.urlStr = seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
-          "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr;
-        $.ajax({
-          url: seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
-            "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr,
-          method: "GET"
-        }).then(function (res) {
-          seatgeek.setEvents(res.events);
-          populateList(seatgeek);
-        });
+        url: 'http://ipinfo.io',
+        method: "GET"
+      }).
+        then(function (res) {
+          var ip = res.ip;
+          console.log(ip);
+          var taxonomiesStr = '';
+          for (var i = 0; i < taxonomies.length; i++) {
+            taxonomiesStr = taxonomiesStr + "&taxonomies.name=" + taxonomies[i];
+          }
+          seatgeek.urlStr = seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
+            "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr;
+          $.ajax({
+            url: seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
+              "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr,
+            method: "GET"
+          }).then(function (res) {
+            seatgeek.setEvents(res.events);
+            populateList(seatgeek);
+          });
 
-      });
+        });
     },
     setEvents: function (events) {
 
@@ -82,14 +85,14 @@ $(document).ready(function () {
     });
 
     seatgeek.getEvents(11, false, taxonomies);
- 
+
     //console.log(seatgeek.events);
     //populateList(seatgeek);
   });
 
 
   /*************************************************** */
-    //List Populators and event click functions
+  //List Populators and event click functions
   /*************************************************** */
 
   // function to render api results to ui
@@ -114,9 +117,9 @@ $(document).ready(function () {
   };
 
   function populateList(response) {
-    
+
     for (var i = 0; i < response.events.length; i++) {
-      
+
       var div = $("<div>");
       var row = $("<div>");
       var title = $("<div>");
@@ -129,28 +132,46 @@ $(document).ready(function () {
 
 
       var event = response.events[i];
-
-      setLocalStorage(title,event);
+      var key = database.ref("unselectedEvents").push({
+        "event": event
+      });
+      var keyName = key.path.pieces_[0];
 
       title.text(event.title);
+      title.attr("key", keyName);
       row.append(title);
       div.append(row);
       row.append(time);
       $(".events").append(div);
     }
 
-    $(".eventContainer").on("click",function(event){
+    $(".eventContainer").on("click", function (e) {
       var self = $(this);
-      var name  = self.find("title").text();
+      var name = self.find(".title");
+      var ref = database.ref(name.attr("key"));
+      ref.once("value")
+        .then(function (snapshot) {
+          var key = snapshot.child("event");
+          var value = key.val();
+          var key2 = database.ref("selectedEvents").push({
+            "event": value
+          });
+
+          console.log(key);
+
+
+        });
+
       
     });
   }
 
-  
+
+
 
 
   /*************************************************** */
-    //End List Populators and event click functions
+  //End List Populators and event click functions
   /*************************************************** */
 
   /********** Storage Helper's ************/
@@ -197,7 +218,7 @@ $(document).ready(function () {
     localStorage.removeItem(key);
   }
 
-  }
+}
 
 );
 
