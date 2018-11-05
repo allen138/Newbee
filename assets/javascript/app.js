@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
   /**
    * 
@@ -6,6 +5,7 @@ $(document).ready(function () {
    */
 
   //  Initialize Firebase
+<<<<<<< HEAD
   var config = {
     apiKey: "AIzaSyAZ9w3hQPnIWxgY-KKl3awkJirnN5mvG3w",
     authDomain: "proj-1-8fff4.firebaseapp.com",
@@ -13,12 +13,37 @@ $(document).ready(function () {
     projectId: "proj-1-8fff4",
     storageBucket: "proj-1-8fff4.appspot.com",
     messagingSenderId: "833251081928"
+=======
+  var eventConfig = {
+    apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
+    authDomain: "group-project-4da86.firebaseapp.com",
+    databaseURL: "https://group-project-4da86.firebaseio.com",
+    projectId: "group-project-4da86",
+    storageBucket: "group-project-4da86.appspot.com",
+    messagingSenderId: "847074672907"
+>>>>>>> ddd96abd7ea2ca9592e388ec157a5558777795e7
   };
-  firebase.initializeApp(config);
 
+<<<<<<< HEAD
 
 
   var database = firebase.database();
+=======
+  var userDataConfig = {
+    apiKey: "AIzaSyBLZjIB6nUrsTKU2lHJuRLoPgNosQfAquE",
+    authDomain: "ucb-project-search-event.firebaseapp.com",
+    databaseURL: "https://ucb-project-search-event.firebaseio.com",
+    projectId: "ucb-project-search-event",
+    storageBucket: "ucb-project-search-event.appspot.com",
+    messagingSenderId: "830770899521"
+  };
+
+  const eventDB = firebase.initializeApp(eventConfig);
+  var eventDatabase = firebase.database(eventDB);
+
+  const userdata = firebase.initializeApp(userDataConfig,'userdata');
+  var userDatabase = firebase.database(userdata);
+>>>>>>> ddd96abd7ea2ca9592e388ec157a5558777795e7
 
   /**
    *  geoIP defaults to empty string
@@ -166,18 +191,56 @@ $(document).ready(function () {
     });
   }
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> ddd96abd7ea2ca9592e388ec157a5558777795e7
   /*************************************************** */
   //End List Populators and event click functions
   /*************************************************** */
 
-  /********** Storage Helper's ************/
+  /********** SignUp Helper's ************/
+
+  /* returns a GUID which will be used as UserID */
+  function guidGenerator() {
+    var S4 = function() {
+       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
+
+/********** Storage Helper's ************/
+
+  /* Creates a User in User DB*/
+  var createUser = function(obj){
+      console.log(obj);
+      userDatabase.ref().push({
+        userID: obj.userID,
+        userName:obj.userName,
+        password:obj.password
+      });
+  }
+
+  /* retreives a the ID from userDB using name */ 
+
+  var getUserID = function(name){
+
+      var data = userDatabase.ref().orderByChild('userName').equalTo(name).on("value", function(snapshot) {
+        console.log(snapshot.val().userID);
+
+        snapshot.forEach(function(data) {
+            console.log(data.val().userID);
+            console.log(data.val().userName);
+            console.log(data.val().password);
+        });
+      });
+  }
 
   /* Get's all values from Fire Base */
-  var getAllValuesFB = function () {
+  var getAllEvent = function () {
 
     database.ref().on("value", function (snapshot) {
       snapshot.forEach(function (childSnapshot) {
