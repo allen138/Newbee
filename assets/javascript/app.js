@@ -5,7 +5,6 @@ $(document).ready(function () {
    */
 
   //  Initialize Firebase
-<<<<<<< HEAD
   var config = {
     apiKey: "AIzaSyAZ9w3hQPnIWxgY-KKl3awkJirnN5mvG3w",
     authDomain: "proj-1-8fff4.firebaseapp.com",
@@ -13,37 +12,11 @@ $(document).ready(function () {
     projectId: "proj-1-8fff4",
     storageBucket: "proj-1-8fff4.appspot.com",
     messagingSenderId: "833251081928"
-=======
-  var eventConfig = {
-    apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
-    authDomain: "group-project-4da86.firebaseapp.com",
-    databaseURL: "https://group-project-4da86.firebaseio.com",
-    projectId: "group-project-4da86",
-    storageBucket: "group-project-4da86.appspot.com",
-    messagingSenderId: "847074672907"
->>>>>>> ddd96abd7ea2ca9592e388ec157a5558777795e7
   };
 
-<<<<<<< HEAD
 
 
   var database = firebase.database();
-=======
-  var userDataConfig = {
-    apiKey: "AIzaSyBLZjIB6nUrsTKU2lHJuRLoPgNosQfAquE",
-    authDomain: "ucb-project-search-event.firebaseapp.com",
-    databaseURL: "https://ucb-project-search-event.firebaseio.com",
-    projectId: "ucb-project-search-event",
-    storageBucket: "ucb-project-search-event.appspot.com",
-    messagingSenderId: "830770899521"
-  };
-
-  const eventDB = firebase.initializeApp(eventConfig);
-  var eventDatabase = firebase.database(eventDB);
-
-  const userdata = firebase.initializeApp(userDataConfig,'userdata');
-  var userDatabase = firebase.database(userdata);
->>>>>>> ddd96abd7ea2ca9592e388ec157a5558777795e7
 
   /**
    *  geoIP defaults to empty string
@@ -191,13 +164,6 @@ $(document).ready(function () {
     });
   }
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> ddd96abd7ea2ca9592e388ec157a5558777795e7
   /*************************************************** */
   //End List Populators and event click functions
   /*************************************************** */
