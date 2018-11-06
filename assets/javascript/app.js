@@ -107,6 +107,13 @@ $(document).ready(function () {
     createUser(data);
   });
 
+  $("#logout").on('click',function(){
+    loggedInUserID = undefined;
+    loggedInUserName = undefined;
+    location.reload();
+
+  });
+
   // click function rendering search input. 
   $("#search").on("click", function (event) {
     console.log(loggedInUserID);
@@ -242,18 +249,15 @@ $(document).ready(function () {
           loggedInUserID = data.val().userID;
           loggedInUserName = data.val().userName;
           isUser = true;
+            $("#sign-in-form").empty();
+            $(".dropdown").text("Welcome!! "+ loggedInUserName);
+            $("#logout").css("visibility","visible");
         }
-        userNowLoggedIn();
       });
-      function userNowLoggedIn() {
-        $("#sign-in-form").empty();
-        $(".dropdown").text("Welcome! "+ loggedInUserName);
-      }
     });
-    
     return isUser;
   }
-  
+
   /* Get's all values from Fire Base */
   var getAllEvent = function () {
 

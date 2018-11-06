@@ -129,3 +129,10 @@ footer {
 #username, #password{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.dropdown{
+    margin-right:10px;
+}
+
+#logout{  
+    visibility: hidden;
+}
