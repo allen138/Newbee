@@ -111,6 +111,7 @@ $(document).ready(function () {
     loggedInUserID = undefined;
     loggedInUserName = undefined;
     location.reload();
+    deleteLocalStorage(loggedInUserID);
 
   });
 
@@ -252,6 +253,9 @@ $(document).ready(function () {
             $("#sign-in-form").empty();
             $(".dropdown").text("Welcome!! "+ loggedInUserName);
             $("#logout").css("visibility","visible");
+            $("#my-events").css("visibility","visible");
+
+            setLocalStorage('loggedInUserID',loggedInUserID);
         }
       });
     });
@@ -281,12 +285,10 @@ $(document).ready(function () {
     }, function (errorObject) {
       console.log("Error " + errorObject.code);
     });
-
   }
 
-
   /* add an item to the local storage */
-  var setLocalStorage = function (key, val) {
+  var setLocalStorage = function (key, value) {
     localStorage.setItem(key, value);
   };
 

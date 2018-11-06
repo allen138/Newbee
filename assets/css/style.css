@@ -19,6 +19,7 @@ input {
     margin-right: 10px;
     margin-left: 10px;
 }
+
 .lead, 
 .input-group-text,
 .response {
@@ -41,10 +42,6 @@ footer {
 }
 .response {
     background-image: url(../images/full-bloom.png);
-}
-.my-events{
-    font-family: 'Poor Story', cursive;
-    margin-bottom: 0;
 }
 .events-title {
     padding-bottom: 0;
@@ -134,5 +131,10 @@ footer {
 }
 
 #logout{  
+    visibility: hidden;
+}
+
+#my-events{
+    margin-bottom: 0;
     visibility: hidden;
 }
