@@ -51,11 +51,16 @@ footer {
 }
 .eventContainer:hover {
     background-color:lightgreen;
+    cursor: pointer;
 }
 
-
-
-
+.eventContainer {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 3px;
+    text-align: center;
+}
 
 .container {
     width: 960px;
