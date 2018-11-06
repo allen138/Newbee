@@ -5,32 +5,19 @@ $(document).ready(function () {
    */
 
   //  Initialize Firebase
-  var eventConfig = {
-    apiKey: "AIzaSyAaBxgXJBVE_9C8qzRu_ebV1sscAVqiers",
-    authDomain: "group-project-4da86.firebaseapp.com",
-    databaseURL: "https://group-project-4da86.firebaseio.com",
-    projectId: "group-project-4da86",
-    storageBucket: "group-project-4da86.appspot.com",
-    messagingSenderId: "847074672907"
+  var config = {
+    apiKey: "AIzaSyAZ9w3hQPnIWxgY-KKl3awkJirnN5mvG3w",
+    authDomain: "proj-1-8fff4.firebaseapp.com",
+    databaseURL: "https://proj-1-8fff4.firebaseio.com",
+    projectId: "proj-1-8fff4",
+    storageBucket: "proj-1-8fff4.appspot.com",
+    messagingSenderId: "833251081928"
   };
+  firebase.initializeApp(config);
 
-  var userDataConfig = {
-    apiKey: "AIzaSyBLZjIB6nUrsTKU2lHJuRLoPgNosQfAquE",
-    authDomain: "ucb-project-search-event.firebaseapp.com",
-    databaseURL: "https://ucb-project-search-event.firebaseio.com",
-    projectId: "ucb-project-search-event",
-    storageBucket: "ucb-project-search-event.appspot.com",
-    messagingSenderId: "830770899521"
-  };
 
-  var loggedInUserID = undefined;
-  var loggedInUserName = undefined;
 
-  const eventDB = firebase.initializeApp(eventConfig);
-  var eventDatabase = firebase.database(eventDB);
-
-  const userdata = firebase.initializeApp(userDataConfig,'userdata');
-  var userDatabase = firebase.database(userdata);
+  var database = firebase.database();
 
   /**
    *  geoIP defaults to empty string
@@ -57,30 +44,30 @@ $(document).ready(function () {
         this.sortOrder = "desc";
       }
       $.getJSON({
-        url : 'http://ipinfo.io',
-        method: "GET"}).
-      then(function (res) {
-        var ip = res.ip;
-        console.log(ip);
-        var taxonomiesStr = '';
-        for (var i = 0; i < taxonomies.length; i++) {
-          taxonomiesStr = taxonomiesStr + "&taxonomies.name=" + taxonomies[i];
-        }
-        seatgeek.urlStr = seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
-          "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr;
-        $.ajax({
-          url: seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
-            "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr,
-          method: "GET"
-        }).then(function (res) {
-          seatgeek.setEvents(res.events);
-          populateList(seatgeek);
-        });
+        url: 'http://ipinfo.io',
+        method: "GET"
+      }).
+        then(function (res) {
+          var ip = res.ip;
+          console.log(ip);
+          var taxonomiesStr = '';
+          for (var i = 0; i < taxonomies.length; i++) {
+            taxonomiesStr = taxonomiesStr + "&taxonomies.name=" + taxonomies[i];
+          }
+          seatgeek.urlStr = seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
+            "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr;
+          $.ajax({
+            url: seatgeek.url + "&geoip=" + ip + "&range=" + seatgeek.rangeInMiles + "mi" +
+              "&sort=" + seatgeek.sortField + "." + seatgeek.sortOrder + taxonomiesStr,
+            method: "GET"
+          }).then(function (res) {
+            seatgeek.setEvents(res.events);
+            populateList(seatgeek);
+          });
 
-      });
+        });
     },
     setEvents: function (events) {
-
       this.events = events;
     }
   };
@@ -118,18 +105,17 @@ $(document).ready(function () {
     $.each($("input:checked"), function () {
       var search = $(this).val();
       taxonomies.push(search);
-      console.log(search);
     });
 
     seatgeek.getEvents(11, false, taxonomies);
- 
+
     //console.log(seatgeek.events);
     //populateList(seatgeek);
   });
 
 
   /*************************************************** */
-    //List Populators and event click functions
+  //List Populators and event click functions
   /*************************************************** */
 
   // function to render api results to ui
@@ -154,62 +140,104 @@ $(document).ready(function () {
   };
 
   function populateList(response) {
-    
+    var myEvents = [];
     for (var i = 0; i < response.events.length; i++) {
-      
-      var div = $("<div>");
-      var row = $("<div>");
+
+      var eventButton = $("<div>");
+      var eventContainer = $("<div>");
       var title = $("<div>");
       var time = $("<div>");
 
       time.text(seatgeek.events[i].datetime_local);
-      row.addClass("eventContainer")
+      eventContainer.addClass("eventContainer")
       title.addClass("title")
-      div.addClass("eventButton");
-
+      eventButton.addClass("eventButton");
 
       var event = response.events[i];
-
-      setLocalStorage(title,event);
+      var id = event.id;
+      eventContainer.attr("id", id);
+      myEvents.push(event);
 
       title.text(event.title);
-      row.append(title);
-      div.append(row);
-      row.append(time);
-      $(".events").append(div);
+      eventContainer.append(title);
+      eventButton.append(eventContainer);
+      eventContainer.append(time);
+      $(".events").append(eventButton);
     }
 
-    $(".eventContainer").on("click",function(event){
-      var self = $(this);
-      var name  = self.find("title").text();
-      
+    database.ref().set({
+      "myEvents": myEvents
     });
+
+    
+
+    $(".eventContainer").on("click", function (e) {
+      var self = $(this);
+      var id = parseInt(self.attr("id"));
+
+      var ref = database.ref();
+      
+      ref.once("value").then(function (snapshot) {
+        var myEvents = snapshot.child("myEvents").val();
+
+        var elementWithID = myEvents.filter(x => {
+          return x.id === id;
+        })[0];
+        console.log(elementWithID);
+        var index = myEvents.indexOf(elementWithID);
+        console.log(index);
+        myEvents.splice(index,1);
+        console.log(myEvents);
+
+        database.ref().set({
+          "myEvents": myEvents
+        });
+
+
+
+
+        var selectedEvents =   snapshot.child("selectedEvents").val();
+        if (selectedEvents === null){
+          selectedEvents = [];
+        }
+        selectedEvents.push(elementWithID)
+        ref.set({
+          "selectedEvents": selectedEvents
+        });
+
+
+
+      });
+
+
+    });
+
   }
 
   /*************************************************** */
-    //End List Populators and event click functions
+  //End List Populators and event click functions
   /*************************************************** */
 
   /********** SignUp Helper's ************/
 
   /* returns a GUID which will be used as UserID */
   function guidGenerator() {
-    var S4 = function() {
-       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    var S4 = function () {
+      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     };
     return (S4()+S4()+S4()+S4()+S4()+S4()+S4()+S4());
 }
 
-/********** Storage Helper's ************/
+  /********** Storage Helper's ************/
 
   /* Creates a User in User DB*/
-  var createUser = function(obj){
-      console.log(obj);
-      userDatabase.ref().push({
-        userID: obj.userID,
-        userName:obj.userName,
-        password:obj.password
-      });
+  var createUser = function (obj) {
+    console.log(obj);
+    userDatabase.ref().push({
+      userID: obj.userID,
+      userName: obj.userName,
+      password: obj.password
+    });
   }
 
   /* retreives a the ID from userDB using name and check if the password is correct */ 
@@ -272,7 +300,7 @@ $(document).ready(function () {
     localStorage.removeItem(key);
   }
 
-  }
+}
 
 );
 
