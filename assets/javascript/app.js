@@ -92,10 +92,9 @@ $(document).ready(function () {
     var username = $('#username').val().trim();
     var password = $('#password').val().trim();
     var isUser = checkExistingUser(username,password);
-    console.log(isUser);
-    if(loggedInUserName === undefined){
-      console.log("Enter a valid Username and Password");
-    }
+
+    console.log(loggedInUserID);
+    console.log(loggedInUserName);
   });
 
   $('#sigup-submit').on("click", function (event){
