@@ -13,11 +13,24 @@ $(document).ready(function () {
     storageBucket: "proj-1-8fff4.appspot.com",
     messagingSenderId: "833251081928"
   };
+  
   firebase.initializeApp(config);
-
-
-
   var database = firebase.database();
+
+  var userDataConfig = {
+    apiKey: "AIzaSyBLZjIB6nUrsTKU2lHJuRLoPgNosQfAquE",
+    authDomain: "ucb-project-search-event.firebaseapp.com",
+    databaseURL: "https://ucb-project-search-event.firebaseio.com",
+    projectId: "ucb-project-search-event",
+    storageBucket: "ucb-project-search-event.appspot.com",
+    messagingSenderId: "830770899521"
+  };
+
+  const userdata = firebase.initializeApp(userDataConfig,'userdata');
+  var userDatabase = firebase.database(userdata);
+
+  var loggedInUserID = undefined;
+  var loggedInUserName = undefined;
 
   /**
    *  geoIP defaults to empty string
