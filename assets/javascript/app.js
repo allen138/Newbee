@@ -114,16 +114,19 @@ $(document).ready(function () {
   // click function rendering search input. 
   $("#search").on("click", function (event) {
     event.preventDefault();
+   
     var taxonomies = [];
     $.each($("input:checked"), function () {
       var search = $(this).val();
       taxonomies.push(search);
+      $(".events").empty();
     });
 
     seatgeek.getEvents(11, false, taxonomies);
 
     //console.log(seatgeek.events);
     //populateList(seatgeek);
+    console.log(seatgeek);
   });
 
 
@@ -131,26 +134,7 @@ $(document).ready(function () {
   //List Populators and event click functions
   /*************************************************** */
 
-  // function to render api results to ui
-  function renderResults(seatgeek) {
-    for (var i = 0; i < seatgeek.events.length; i++) {
-      console.log(seatgeek.events[i]);
-      var mainEvents = $("<ul>");
-      mainEvents.addClass("list-group");
-      $(".events").append(mainEvents);
-
-      var title = seatgeek.events[i].title;
-      var eventsList = $("<li class='event-list-title'></li>");
-      eventsList.append("<span class='label label-primary'>" + title + "</span>");
-
-      var eventDate = seatgeek.events[i].datetime_local;
-      eventsList.append("<h5>" + eventDate + "</h5>");
-
-      mainEvents.append(eventsList);
-      $(".events").html(mainEvents);
-    };
-
-  };
+  // function to populate api results to ui
 
   function populateList(response) {
     var myEvents = [];
@@ -160,10 +144,12 @@ $(document).ready(function () {
       var eventContainer = $("<div>");
       var title = $("<div>");
       var time = $("<div>");
+      var eventVenue = $("<div>");
 
-      time.text(seatgeek.events[i].datetime_local);
+      time = moment(seatgeek.events[i].datetime_local).format("llll");
       eventContainer.addClass("eventContainer")
       title.addClass("title")
+      eventVenue.addClass("eventVenue");
       eventButton.addClass("eventButton");
 
       var event = response.events[i];
@@ -171,10 +157,12 @@ $(document).ready(function () {
       eventContainer.attr("id", id);
       myEvents.push(event);
 
+      eventVenue.text(seatgeek.events[i].venue.name);
       title.text(event.title);
       eventContainer.append(title);
       eventButton.append(eventContainer);
       eventContainer.append(time);
+      eventContainer.append(eventVenue);
       $(".events").append(eventButton);
     }
 
