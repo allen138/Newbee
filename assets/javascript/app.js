@@ -91,10 +91,9 @@ $(document).ready(function () {
     event.preventDefault();
     var username = $('#username').val().trim();
     var password = $('#password').val().trim();
+    console.log(username);
+    console.log(password);
     var isUser = checkExistingUser(username,password);
-
-    console.log(loggedInUserID);
-    console.log(loggedInUserName);
   });
 
   $('#sigup-submit').on("click", function (event){
@@ -112,6 +111,9 @@ $(document).ready(function () {
 
   // click function rendering search input. 
   $("#search").on("click", function (event) {
+    console.log(loggedInUserID);
+    console.log(loggedInUserName);
+    
     $(".events").empty();
     event.preventDefault();
    
