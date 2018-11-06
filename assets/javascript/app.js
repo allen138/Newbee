@@ -13,7 +13,7 @@ $(document).ready(function () {
     storageBucket: "proj-1-8fff4.appspot.com",
     messagingSenderId: "833251081928"
   };
-  
+
   firebase.initializeApp(config);
   var database = firebase.database();
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
     messagingSenderId: "830770899521"
   };
 
-  const userdata = firebase.initializeApp(userDataConfig,'userdata');
+  const userdata = firebase.initializeApp(userDataConfig, 'userdata');
   var userDatabase = firebase.database(userdata);
 
   var loggedInUserID = undefined;
@@ -87,24 +87,22 @@ $(document).ready(function () {
 
   //click sign-in
 
-  $('#sign-in').on("click", function (event){
+  $('#sign-in').on("click", function (event) {
     event.preventDefault();
     var username = $('#username').val().trim();
     var password = $('#password').val().trim();
-    console.log(username);
-    console.log(password);
     var isUser = checkExistingUser(username,password);
   });
 
-  $('#sigup-submit').on("click", function (event){
+  $('#sigup-submit').on("click", function (event) {
     event.preventDefault();
     var userID = guidGenerator();
     var userName = $("#signup-username").val();
     var password = $("#signup-password").val();
     var data = {
-      userID:userID,
-      userName:userName,
-      password:password
+      userID: userID,
+      userName: userName,
+      password: password
     }
     createUser(data);
   });
@@ -116,7 +114,7 @@ $(document).ready(function () {
     
     $(".events").empty();
     event.preventDefault();
-   
+
     var taxonomies = [];
     $.each($("input:checked"), function () {
       var search = $(this).val();
@@ -138,7 +136,7 @@ $(document).ready(function () {
 
   database.ref().on("value", function (snapshot) {
     var myEvents = snapshot.child("selectedEvents").val();
-    createEventButtons(myEvents,$(".myEvents"));
+    createEventButtons(myEvents, $(".myEvents"));
   });
 
 
@@ -149,7 +147,7 @@ $(document).ready(function () {
 
       var eventButton = $("<div>");
       var eventContainer = $("<div>");
-      var eventVenue =  $("<div>");
+      var eventVenue = $("<div>");
       var title = $("<div>");
       var time = $("<div>");
       var event = myEvents[i];
@@ -160,8 +158,7 @@ $(document).ready(function () {
       title.addClass("title")
       eventVenue.addClass("eventVenue");
       eventButton.addClass("eventButton");
-      eventContainer.attr("id", id);
-
+      eventContainer.data("event", event);
       eventVenue.text(myEvents[i].venue.name);
       title.text(event.title);
       eventContainer.append(title);
@@ -173,27 +170,22 @@ $(document).ready(function () {
   }
 
   function populateList(response) {
+
     var myEvents = response.events;
     console.log(response);
-    createEventButtons(myEvents,$(".events"));
+    createEventButtons(myEvents, $(".events"));
 
     $(".eventContainer").on("click", function (e) {
+      if (loggedInUserID !== null) {
+        var self = $(this);
+        var ref = database.ref();
+        var event = self.data("event");
+        ref.once("value").then(function (snapshot) {
+          var selectedEvents = snapshot.child("selectedEvents").val();
+          if (selectedEvents === null) {
+            selectedEvents = [];
+          };
 
-      var self = $(this);
-      var ref = database.ref();
-      var id = parseInt(self.attr("id"));
-      console.log("f: " + id);
-      ref.once("value").then(function (snapshot) {
-        var selectedEvents = snapshot.child("selectedEvents").val();
-        if (selectedEvents === null) {
-          selectedEvents = [];
-        };
-
-        $.ajax({
-          url: "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA&id=" + id,
-          method: "GET"
-        }).then(function (res) {
-          var event = res.events[0];
           if (!selectedEvents.includes(event)) {
             selectedEvents.push(event);
           }
@@ -201,10 +193,12 @@ $(document).ready(function () {
             "selectedEvents": selectedEvents
           });
           self.remove();
+
+
+
         });
+      }
 
-
-      });
 
     });
 
@@ -221,8 +215,8 @@ $(document).ready(function () {
     var S4 = function () {
       return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     };
-    return (S4()+S4()+S4()+S4()+S4()+S4()+S4()+S4());
-}
+    return (S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4());
+  }
 
   /********** Storage Helper's ************/
 
@@ -236,24 +230,30 @@ $(document).ready(function () {
     });
   }
 
-  /* retreives a the ID from userDB using name and check if the password is correct */ 
+  /* retreives a the ID from userDB using name and check if the password is correct */
 
-  var checkExistingUser = function (username,password){
+  var checkExistingUser = function (username, password) {
     var isUser = false;
-    var data = userDatabase.ref().orderByChild('userName').equalTo(username).on("value", function(snapshot) {
-      
-      snapshot.forEach(function(data) {
-        if(password === data.val().password ){
+    var data = userDatabase.ref().orderByChild('userName').equalTo(username).on("value", function (snapshot) {
+
+      snapshot.forEach(function (data) {
+        if (password === data.val().password) {
           console.log("User and Password Match");
           loggedInUserID = data.val().userID;
           loggedInUserName = data.val().userName;
           isUser = true;
         }
+        userNowLoggedIn();
       });
+      function userNowLoggedIn() {
+        $("#sign-in-form").empty();
+        $(".dropdown").text("Welcome! "+ loggedInUserName);
+      }
     });
+    
     return isUser;
   }
-
+  
   /* Get's all values from Fire Base */
   var getAllEvent = function () {
 
