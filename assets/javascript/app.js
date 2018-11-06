@@ -72,8 +72,10 @@ $(document).ready(function () {
     }
   };
 
+
   // click function rendering search input. 
   $("#search").on("click", function (event) {
+    $(".events").empty();
     event.preventDefault();
     var taxonomies = [];
     $.each($("input:checked"), function () {
@@ -92,97 +94,69 @@ $(document).ready(function () {
   //List Populators and event click functions
   /*************************************************** */
 
-  // function to render api results to ui
-  function renderResults(seatgeek) {
-    for (var i = 0; i < seatgeek.events.length; i++) {
-      console.log(seatgeek.events[i]);
-      var mainEvents = $("<ul>");
-      mainEvents.addClass("list-group");
-      $(".events").append(mainEvents);
+  database.ref().on("value", function (snapshot) {
+    var myEvents = snapshot.child("selectedEvents").val();
+    createEventButtons(myEvents,$(".myEvents"));
+  });
 
-      var title = seatgeek.events[i].title;
-      var eventsList = $("<li class='event-list-title'></li>");
-      eventsList.append("<span class='label label-primary'>" + title + "</span>");
 
-      var eventDate = seatgeek.events[i].datetime_local;
-      eventsList.append("<h5>" + eventDate + "</h5>");
 
-      mainEvents.append(eventsList);
-      $(".events").html(mainEvents);
-    };
-
-  };
-
-  function populateList(response) {
-    var myEvents = [];
-    for (var i = 0; i < response.events.length; i++) {
+  function createEventButtons(myEvents, eventDiv) {
+    for (var i = 0; i < myEvents.length; i++) {
 
       var eventButton = $("<div>");
       var eventContainer = $("<div>");
       var title = $("<div>");
       var time = $("<div>");
+      var event = myEvents[i];
+      var id = event.id;
 
-      time.text(seatgeek.events[i].datetime_local);
+      time.text(event.datetime_local);
       eventContainer.addClass("eventContainer")
       title.addClass("title")
       eventButton.addClass("eventButton");
-
-      var event = response.events[i];
-      var id = event.id;
       eventContainer.attr("id", id);
-      myEvents.push(event);
 
       title.text(event.title);
       eventContainer.append(title);
       eventButton.append(eventContainer);
       eventContainer.append(time);
-      $(".events").append(eventButton);
+      eventDiv.append(eventButton);
     }
+  }
 
-    database.ref().set({
-      "myEvents": myEvents
-    });
-
-    
+  function populateList(response) {
+    var myEvents = response.events;
+    createEventButtons(myEvents,$(".events"));
 
     $(".eventContainer").on("click", function (e) {
+
       var self = $(this);
-      var id = parseInt(self.attr("id"));
-
       var ref = database.ref();
-      
+      var id = parseInt(self.attr("id"));
+      console.log("f: " + id);
       ref.once("value").then(function (snapshot) {
-        var myEvents = snapshot.child("myEvents").val();
-
-        var elementWithID = myEvents.filter(x => {
-          return x.id === id;
-        })[0];
-        console.log(elementWithID);
-        var index = myEvents.indexOf(elementWithID);
-        console.log(index);
-        myEvents.splice(index,1);
-        console.log(myEvents);
-
-        database.ref().set({
-          "myEvents": myEvents
-        });
-
-
-
-
-        var selectedEvents =   snapshot.child("selectedEvents").val();
-        if (selectedEvents === null){
+        var selectedEvents = snapshot.child("selectedEvents").val();
+        if (selectedEvents === null) {
           selectedEvents = [];
-        }
-        selectedEvents.push(elementWithID)
-        ref.set({
-          "selectedEvents": selectedEvents
-        });
+        };
 
+        $.ajax({
+          url: "https://api.seatgeek.com/2/events?client_id=MTM3NTY1NjV8MTU0MTAzNjQ2MC42NA&id=" + id,
+          method: "GET"
+        }).then(function (res) {
+          var event = res.events[0];
+          if (!selectedEvents.includes(event)) {
+            selectedEvents.push(event);
+          }
+          database.ref().set({
+            "selectedEvents": selectedEvents
+          });
+          self.remove();
+        });
 
 
       });
-
 
     });
 
