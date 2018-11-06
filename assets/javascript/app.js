@@ -247,11 +247,17 @@ $(document).ready(function () {
           loggedInUserName = data.val().userName;
           isUser = true;
         }
+        userNowLoggedIn();
       });
+      function userNowLoggedIn() {
+        $("#sign-in-form").empty();
+        $(".dropdown").text("Welcome! "+ loggedInUserName);
+      }
     });
+    
     return isUser;
   }
-
+  
   /* Get's all values from Fire Base */
   var getAllEvent = function () {
 
