@@ -32,6 +32,35 @@ $(document).ready(function () {
   var loggedInUserID = undefined;
   var loggedInUserName = undefined;
 
+   /* add an item to the local storage */
+   var setLocalStorage = function (key, value) {
+    localStorage.setItem(key, value);
+  };
+
+  /* retreives an item from the local storage based on the key */
+  var getLocalStorage = function (key) {
+    return localStorage.getItem(key);
+  }
+
+  /* removes an item from the local storage based on the key */
+  var deleteLocalStorage = function (key) {
+    console.log(key);
+    localStorage.removeItem(key);
+  }
+
+  var checkUserAlreadyLoggedIn = function (){
+    loggedInUserID = getLocalStorage('loggedInUserID');
+    loggedInUserName = getLocalStorage('loggedInUserName');
+    console.log(loggedInUserID);
+    if(loggedInUserID !== null && loggedInUserName !== null){
+            $("#sign-in-form").empty();
+            $(".dropdown").text("Welcome!! "+ loggedInUserName);
+            $("#logout").css("visibility","visible");
+            $("#my-events").css("visibility","visible");
+    }
+  }
+  checkUserAlreadyLoggedIn();
+
   /**
    *  geoIP defaults to empty string
    *  rangeInMile defaults to 10
@@ -110,8 +139,9 @@ $(document).ready(function () {
   $("#logout").on('click',function(){
     loggedInUserID = undefined;
     loggedInUserName = undefined;
-    location.reload();
-    deleteLocalStorage(loggedInUserID);
+    deleteLocalStorage('loggedInUserID');
+    deleteLocalStorage('loggedInUserName');
+    location.href = 'index.html';
 
   });
 
@@ -256,6 +286,8 @@ $(document).ready(function () {
             $("#my-events").css("visibility","visible");
 
             setLocalStorage('loggedInUserID',loggedInUserID);
+            setLocalStorage('loggedInUserName',loggedInUserName);
+            
         }
       });
     });
@@ -287,20 +319,7 @@ $(document).ready(function () {
     });
   }
 
-  /* add an item to the local storage */
-  var setLocalStorage = function (key, value) {
-    localStorage.setItem(key, value);
-  };
-
-  /* retreives an item from the local storage based on the key */
-  var getLocalStorage = function (key) {
-    localStorage.getItem(key);
-  }
-
-  /* removes an item from the local storage based on the key */
-  var deleteLocalStorage = function (key) {
-    localStorage.removeItem(key);
-  }
+ 
 
 }
 
