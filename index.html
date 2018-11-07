@@ -4,6 +4,7 @@
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -30,7 +31,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link" href="myEvents.html">My Events</a>
+          <a id="my-events" class="nav-item nav-link" href="myEvents.html">My Events</a>
         </div>
       </div>
       <div class="dropdown" style="float: right;">
@@ -53,10 +54,11 @@
               Remember me
             </label>
           </div>
-          <button type="submit" class="btn btn-primary" id="sign-in" style="margin: 5px 0 10px 0;">Sign in</button>
+          <button type="submit" class="btn btn-secondary" id="sign-in" style="margin: 5px 0 10px 0;">Sign in</button>
           <p>Don't have an account? <a href="signUp.html">Sign Up</a></p>
         </form>
       </div>
+      <button type="submit" class="btn btn-secondary" id="logout" style="margin: 5px 0 10px 0;">Logout</button>
     </div>
   </nav>
   <!------------------ Jumbotron ------------------------->

@@ -32,6 +32,35 @@ $(document).ready(function () {
   var loggedInUserID = undefined;
   var loggedInUserName = undefined;
 
+   /* add an item to the local storage */
+   var setLocalStorage = function (key, value) {
+    localStorage.setItem(key, value);
+  };
+
+  /* retreives an item from the local storage based on the key */
+  var getLocalStorage = function (key) {
+    return localStorage.getItem(key);
+  }
+
+  /* removes an item from the local storage based on the key */
+  var deleteLocalStorage = function (key) {
+    console.log(key);
+    localStorage.removeItem(key);
+  }
+
+  var checkUserAlreadyLoggedIn = function (){
+    loggedInUserID = getLocalStorage('loggedInUserID');
+    loggedInUserName = getLocalStorage('loggedInUserName');
+    console.log(loggedInUserID);
+    if(loggedInUserID !== null && loggedInUserName !== null){
+            $("#sign-in-form").empty();
+            $(".dropdown").text("Welcome!! "+ loggedInUserName);
+            $("#logout").css("visibility","visible");
+            $("#my-events").css("visibility","visible");
+    }
+  }
+  checkUserAlreadyLoggedIn();
+
   /**
    *  geoIP defaults to empty string
    *  rangeInMile defaults to 10
@@ -91,10 +120,7 @@ $(document).ready(function () {
     event.preventDefault();
     var username = $('#username').val().trim();
     var password = $('#password').val().trim();
-    var isUser = checkExistingUser(username, password);
-
-    console.log(loggedInUserID);
-    console.log(loggedInUserName);
+    var isUser = checkExistingUser(username,password);
   });
 
   $('#sigup-submit').on("click", function (event) {
@@ -110,8 +136,20 @@ $(document).ready(function () {
     createUser(data);
   });
 
+  $("#logout").on('click',function(){
+    loggedInUserID = undefined;
+    loggedInUserName = undefined;
+    deleteLocalStorage('loggedInUserID');
+    deleteLocalStorage('loggedInUserName');
+    location.href = 'index.html';
+
+  });
+
   // click function rendering search input. 
   $("#search").on("click", function (event) {
+    console.log(loggedInUserID);
+    console.log(loggedInUserName);
+    
     $(".events").empty();
     event.preventDefault();
 
@@ -242,18 +280,20 @@ $(document).ready(function () {
           loggedInUserID = data.val().userID;
           loggedInUserName = data.val().userName;
           isUser = true;
+            $("#sign-in-form").empty();
+            $(".dropdown").text("Welcome!! "+ loggedInUserName);
+            $("#logout").css("visibility","visible");
+            $("#my-events").css("visibility","visible");
+
+            setLocalStorage('loggedInUserID',loggedInUserID);
+            setLocalStorage('loggedInUserName',loggedInUserName);
+            
         }
-        userNowLoggedIn();
       });
-      function userNowLoggedIn() {
-        $("#sign-in-form").empty();
-        $(".dropdown").text("Welcome! "+ loggedInUserName);
-      }
     });
-    
     return isUser;
   }
-  
+
   /* Get's all values from Fire Base */
   var getAllEvent = function () {
 
@@ -277,24 +317,9 @@ $(document).ready(function () {
     }, function (errorObject) {
       console.log("Error " + errorObject.code);
     });
-
   }
 
-
-  /* add an item to the local storage */
-  var setLocalStorage = function (key, val) {
-    localStorage.setItem(key, value);
-  };
-
-  /* retreives an item from the local storage based on the key */
-  var getLocalStorage = function (key) {
-    localStorage.getItem(key);
-  }
-
-  /* removes an item from the local storage based on the key */
-  var deleteLocalStorage = function (key) {
-    localStorage.removeItem(key);
-  }
+ 
 
 }
 
