@@ -153,7 +153,7 @@ $(document).ready(function () {
       var event = myEvents[i];
       var id = event.id;
 
-      time.text(event.datetime_local);
+      time= moment(event.datetime_local).format("llll");
       eventContainer.addClass("eventContainer")
       title.addClass("title")
       eventVenue.addClass("eventVenue");
