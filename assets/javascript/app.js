@@ -54,7 +54,7 @@ $(document).ready(function () {
     console.log(loggedInUserID);
     if(loggedInUserID !== null && loggedInUserName !== null){
             $("#sign-in-form").empty();
-            $(".dropdown").text("Welcome!! "+ loggedInUserName);
+            $(".dropdown").text("Welcome! "+ loggedInUserName);
             $("#logout").css("visibility","visible");
             $("#my-events").css("visibility","visible");
     }
@@ -134,6 +134,9 @@ $(document).ready(function () {
       password: password
     }
     createUser(data);
+    setLocalStorage('newUserId',userID);
+    setLocalStorage('newUserName',userName);
+    window.location.href="index.html";
   });
 
   $("#logout").on('click',function(){
@@ -151,6 +154,7 @@ $(document).ready(function () {
     console.log(loggedInUserName);
     
     $(".events").empty();
+    $(".checkmark").prop("checked", false);
     event.preventDefault();
 
     var taxonomies = [];
@@ -190,6 +194,7 @@ $(document).ready(function () {
       var time = $("<div>");
       var event = myEvents[i];
       var id = event.id;
+      var buyTicketUrl = $("<a class='ticket-link' href="+myEvents[i].url+" target='_blank'>Find Tickets</a>");
 
       time= moment(event.datetime_local).format("llll");
       eventContainer.addClass("eventContainer")
@@ -203,6 +208,7 @@ $(document).ready(function () {
       eventContainer.append(eventVenue);
       eventButton.append(eventContainer);
       eventContainer.append(time);
+      eventContainer.append(buyTicketUrl);
       eventDiv.append(eventButton);
     }
   }
@@ -246,6 +252,10 @@ $(document).ready(function () {
   //End List Populators and event click functions
   /*************************************************** */
 
+  $("#cancel").on("click", function() {
+    $(".myEvents").empty();
+  })
+
   /********** SignUp Helper's ************/
 
   /* returns a GUID which will be used as UserID */
@@ -281,7 +291,7 @@ $(document).ready(function () {
           loggedInUserName = data.val().userName;
           isUser = true;
             $("#sign-in-form").empty();
-            $(".dropdown").text("Welcome!! "+ loggedInUserName);
+            $(".dropdown").text("Welcome! "+ loggedInUserName);
             $("#logout").css("visibility","visible");
             $("#my-events").css("visibility","visible");
 
