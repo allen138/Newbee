@@ -6,16 +6,111 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
     <script src="main.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
-    <div id="demo">
+    
+    <div class = "container" id="demo">
+        <div class = "row" id = "example">
+            <div id = "title"> Title</div>
 
+        </div>
     </div>
+
     <script>
+        var ip = "";
+        wut();
+    
+
+        function wut () {
+            getIP().then(getEvents());
+        }
+
+        async function getIP() {
+            $.getJSON('http://ipinfo.io', function (data) {
+                ip = data.ip;
+                
+               
+                return ip;
+            });
+        }
+
+        function getEvents() {
+            var client_id = "MTM3Njk0OTN8MTU0MTEyNjYzMS42OQ";
+            var geoAPI = "geoip=" + ip;
+            var range = "range=15mi";
+            var url = "https://api.seatgeek.com/2/events?client_id=" + client_id + "&" + geoAPI;
+            $.ajax({
+                url: url,
+                method: "GET"
+            }).then(function (response) {
+                 populateList(response);
+
+
+            });
+        }
+
+
+        function populateList(response) {
+            for (var i = 0; i < response.events.length; i++) {
+                var div = $("<div>");
+                var row = $("<div>");
+                var title= $("<div>");
+
+                row.addClass("eventContainer")
+                title.addClass("title")
+                div.addClass("eventButton");
+
+
+                var event = response.events[i];
+                
+                title.text(event.title);
+                row.append(title);
+                div.append(row);
+                 $(".events").append(div);
+            }
+           
+        }
+
         
+
+
+    </script>
+    <script>
+       /* function getLocation() {
+
+
+
+
+            if (navigator.geolocation) {
+                (navigator.geolocation.getCurrentPosition(showPosition));
+
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+            var geocoder = new google.maps.Geocoder;
+
+            var latlng = { lat: position.coords.latitude, lng: position.coords.longitude };
+
+
+            geocoder.geocode({ 'location': latlng }, function (results, status) {
+                if (status === 'OK') {
+                    console.log(results);
+                } else {
+                    window.alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }
+        getLocation();*/
 
     </script>
 </body>

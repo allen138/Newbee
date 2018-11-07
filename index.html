@@ -1,27 +1,123 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <!-- link css -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <!-- link Jquery, app.js, firebase, moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="assets/javascript/app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-    <title>Presentation</title>
-  </head>
-  <body>
-    <h1>Group Presentation</h1>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  </body>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <!-- link css -->
+  <link href="https://fonts.googleapis.com/css?family=Poor+Story" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Oswald" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="assets/images/beeIcon.png" sizes="16x16" type="image/png">
+  <title>New In Town!</title>
+</head>
+
+<body>
+  <!---------------- nav bar ----------------->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="assets/images/beeIcon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        Newbee</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
+          <a id="my-events" class="nav-item nav-link" href="myEvents.html">My Events</a>
+        </div>
+      </div>
+      <div class="dropdown" style="float: right;">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Hello, Sign in
+        </button>
+        <form class="dropdown-menu p-4" id="sign-in-form" style="width: 250px;">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Username">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password">
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="dropdownCheck2">
+            <label class="form-check-label" for="dropdownCheck2">
+              Remember me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-secondary" id="sign-in" style="margin: 5px 0 10px 0;">Sign in</button>
+          <p>Don't have an account? <a href="signUp.html">Sign Up</a></p>
+        </form>
+      </div>
+      <button type="submit" class="btn btn-secondary" id="logout" style="margin: 5px 0 10px 0;">Logout</button>
+    </div>
+  </nav>
+  <!------------------ Jumbotron ------------------------->
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="header"> Your Entertainment Awaits</h1>
+      <p class="lead"> Select a catagory for events near you</p>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label" for="inlineCheckbox1">Sports
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="sports">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label" for="inlineCheckbox2">Concerts
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="concert">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label" for="inlineCheckbox3">Comedy Shows
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="comedy">
+                <span class="checkmark"></span>
+              </label>
+              <button class="btn btn-outline-success my-2 my-sm-0" id="search"> GO </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!------------------ api response --------------------->
+  <div class="response">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 events">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+  </div>
+  <footer> Have Fun Newbee &copy;2018</footer>
+
+  <!-- jquery js-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <!-- popper js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <!-- Bootstrap js-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <!-- moment js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <!-- firebase -->
+  <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+
+  <script src="assets/javascript/app.js"></script>
+</body>
+
 </html>
