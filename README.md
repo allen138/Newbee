@@ -12,3 +12,5 @@ Find an event you like and when you click on it, that event will be saved to "My
 In "My Events" you can easily track the events your interested in and find tickets by clicking the link to the right of the event. 
 
 Now get out there and have some fun!
+
+https://group-project-1.github.io/Presentation/
