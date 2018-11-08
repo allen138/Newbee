@@ -176,12 +176,19 @@ $(document).ready(function () {
   //List Populators and event click functions
   /*************************************************** */
 
+  // database.ref().on("value", function (snapshot) {
+  //   var myEvents = snapshot.child("selectedEvents").val();
+  //   createEventButtons(myEvents, $(".myEvents"));
+  // });
+
   database.ref().on("value", function (snapshot) {
-    var myEvents = snapshot.child("selectedEvents").val();
-    createEventButtons(myEvents, $(".myEvents"));
+    if (loggedInUserID !== null){
+      database.ref(loggedInUserID).on("value", function (snap) {
+        var myEvents = snap.child("selectedEvents").val();
+        createEventButtons(myEvents, $(".myEvents"));
+      });
+    }
   });
-
-
 
   function createEventButtons(myEvents, eventDiv) {
     if (myEvents === null) return;
@@ -216,36 +223,36 @@ $(document).ready(function () {
   function populateList(response) {
 
     var myEvents = response.events;
-    console.log(response);
     createEventButtons(myEvents, $(".events"));
-
+ 
     $(".eventContainer").on("click", function (e) {
+ 
       if (loggedInUserID !== null) {
         var self = $(this);
-        var ref = database.ref();
+        var ref = database.ref(loggedInUserID);
+        if (ref === null){
+          database.ref(loggedInUserID).set({
+            "selectedEvents": selectedEvents
+          });
+        }
         var event = self.data("event");
+ 
         ref.once("value").then(function (snapshot) {
           var selectedEvents = snapshot.child("selectedEvents").val();
           if (selectedEvents === null) {
             selectedEvents = [];
           };
-
+ 
           if (!selectedEvents.includes(event)) {
             selectedEvents.push(event);
           }
-          database.ref().set({
+          database.ref(loggedInUserID).set({
             "selectedEvents": selectedEvents
           });
           self.remove();
-
-
-
         });
       }
-
-
     });
-
   }
 
   /*************************************************** */
