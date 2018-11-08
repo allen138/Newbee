@@ -1,4 +1,4 @@
-import './storageHelper';
+var stg = require('./storageHelper');
 
 $(document).ready(function () {
   /**
@@ -7,6 +7,7 @@ $(document).ready(function () {
    */
 
   //  Initialize Firebase
+
   var config = {
     apiKey: "AIzaSyAZ9w3hQPnIWxgY-KKl3awkJirnN5mvG3w",
     authDomain: "proj-1-8fff4.firebaseapp.com",
@@ -33,26 +34,10 @@ $(document).ready(function () {
 
   var loggedInUserID = undefined;
   var loggedInUserName = undefined;
-
-   /* add an item to the local storage */
-   var setLocalStorage = function (key, value) {
-    localStorage.setItem(key, value);
-  };
-
-  /* retreives an item from the local storage based on the key */
-  var getLocalStorage = function (key) {
-    return localStorage.getItem(key);
-  }
-
-  /* removes an item from the local storage based on the key */
-  var deleteLocalStorage = function (key) {
-    console.log(key);
-    localStorage.removeItem(key);
-  }
-
+  
   var checkUserAlreadyLoggedIn = function (){
-    loggedInUserID = getLocalStorage('loggedInUserID');
-    loggedInUserName = getLocalStorage('loggedInUserName');
+    loggedInUserID = stg.getLocalStorage('loggedInUserID');
+    loggedInUserName = stg.getLocalStorage('loggedInUserName');
     console.log(loggedInUserID);
     if(loggedInUserID !== null && loggedInUserName !== null){
             $("#sign-in-form").empty();
@@ -136,16 +121,16 @@ $(document).ready(function () {
       password: password
     }
     createUser(data);
-    setLocalStorage('newUserId',userID);
-    setLocalStorage('newUserName',userName);
+    stg.setLocalStorage('newUserId',userID);
+    stg.setLocalStorage('newUserName',userName);
     window.location.href="index.html";
   });
 
   $("#logout").on('click',function(){
     loggedInUserID = undefined;
     loggedInUserName = undefined;
-    deleteLocalStorage('loggedInUserID');
-    deleteLocalStorage('loggedInUserName');
+    stg.deleteLocalStorage('loggedInUserID');
+    stg.deleteLocalStorage('loggedInUserName');
     location.href = 'index.html';
 
   });
@@ -304,8 +289,8 @@ $(document).ready(function () {
             $("#logout").css("visibility","visible");
             $("#my-events").css("visibility","visible");
 
-            setLocalStorage('loggedInUserID',loggedInUserID);
-            setLocalStorage('loggedInUserName',loggedInUserName);
+            stg.setLocalStorage('loggedInUserID',loggedInUserID);
+            stg.setLocalStorage('loggedInUserName',loggedInUserName);
             
         }
       });
