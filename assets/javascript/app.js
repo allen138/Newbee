@@ -1,4 +1,4 @@
-import './storageHelper';
+var stg = require('./storageHelper');
 
 $(document).ready(function () {
   /**
@@ -7,6 +7,7 @@ $(document).ready(function () {
    */
 
   //  Initialize Firebase
+
   var config = {
     apiKey: "AIzaSyAZ9w3hQPnIWxgY-KKl3awkJirnN5mvG3w",
     authDomain: "proj-1-8fff4.firebaseapp.com",
@@ -15,9 +16,6 @@ $(document).ready(function () {
     storageBucket: "proj-1-8fff4.appspot.com",
     messagingSenderId: "833251081928"
   };
-
-  firebase.initializeApp(config);
-  var database = firebase.database();
 
   var userDataConfig = {
     apiKey: "AIzaSyBLZjIB6nUrsTKU2lHJuRLoPgNosQfAquE",
@@ -31,28 +29,16 @@ $(document).ready(function () {
   const userdata = firebase.initializeApp(userDataConfig, 'userdata');
   var userDatabase = firebase.database(userdata);
 
+  firebase.initializeApp(config);
+  var database = firebase.database();
+
   var loggedInUserID = undefined;
   var loggedInUserName = undefined;
 
-   /* add an item to the local storage */
-   var setLocalStorage = function (key, value) {
-    localStorage.setItem(key, value);
-  };
-
-  /* retreives an item from the local storage based on the key */
-  var getLocalStorage = function (key) {
-    return localStorage.getItem(key);
-  }
-
-  /* removes an item from the local storage based on the key */
-  var deleteLocalStorage = function (key) {
-    console.log(key);
-    localStorage.removeItem(key);
-  }
-
+  /** Check's Local storage to see if the user is already logged in */
   var checkUserAlreadyLoggedIn = function (){
-    loggedInUserID = getLocalStorage('loggedInUserID');
-    loggedInUserName = getLocalStorage('loggedInUserName');
+    loggedInUserID = stg.getLocalStorage('loggedInUserID');
+    loggedInUserName = stg.getLocalStorage('loggedInUserName');
     console.log(loggedInUserID);
     if(loggedInUserID !== null && loggedInUserName !== null){
             $("#sign-in-form").empty();
@@ -116,7 +102,7 @@ $(document).ready(function () {
     }
   };
 
-  //click sign-in
+  /** Triggered when user Click's Sign In */
 
   $('#sign-in').on("click", function (event) {
     event.preventDefault();
@@ -136,16 +122,16 @@ $(document).ready(function () {
       password: password
     }
     createUser(data);
-    setLocalStorage('newUserId',userID);
-    setLocalStorage('newUserName',userName);
+    stg.setLocalStorage('newUserId',userID);
+    stg.setLocalStorage('newUserName',userName);
     window.location.href="index.html";
   });
 
   $("#logout").on('click',function(){
     loggedInUserID = undefined;
     loggedInUserName = undefined;
-    deleteLocalStorage('loggedInUserID');
-    deleteLocalStorage('loggedInUserName');
+    stg.deleteLocalStorage('loggedInUserID');
+    stg.deleteLocalStorage('loggedInUserName');
     location.href = 'index.html';
 
   });
@@ -167,9 +153,6 @@ $(document).ready(function () {
     });
 
     seatgeek.getEvents(11, true, taxonomies);
-
-    //console.log(seatgeek.events);
-    //populateList(seatgeek);
     console.log(seatgeek);
   });
 
@@ -177,11 +160,6 @@ $(document).ready(function () {
   /*************************************************** */
   //List Populators and event click functions
   /*************************************************** */
-
-  // database.ref().on("value", function (snapshot) {
-  //   var myEvents = snapshot.child("selectedEvents").val();
-  //   createEventButtons(myEvents, $(".myEvents"));
-  // });
 
   database.ref().on("value", function (snapshot) {
     if (loggedInUserID !== null){
@@ -304,42 +282,14 @@ $(document).ready(function () {
             $("#logout").css("visibility","visible");
             $("#my-events").css("visibility","visible");
 
-            setLocalStorage('loggedInUserID',loggedInUserID);
-            setLocalStorage('loggedInUserName',loggedInUserName);
+            stg.setLocalStorage('loggedInUserID',loggedInUserID);
+            stg.setLocalStorage('loggedInUserName',loggedInUserName);
             
         }
       });
     });
     return isUser;
   }
-
-  /* Get's all values from Fire Base */
-  var getAllEvent = function () {
-
-    database.ref().on("value", function (snapshot) {
-      snapshot.forEach(function (childSnapshot) {
-        var childData = childSnapshot.val();
-        console.log(childData);
-      }, function (errorObject) {
-        console.log("Error " + errorObject.code)
-      });
-    });
-  };
-
-  /* Get's child from Fire Base */
-  var checkChildAdded = function () {
-
-    database.ref().on("child_added", function (snapshot) {
-      var val = snapshot.val();
-      console.log(val);
-
-    }, function (errorObject) {
-      console.log("Error " + errorObject.code);
-    });
-  }
-
- 
-
 }
 
 );
