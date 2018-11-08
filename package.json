@@ -1,0 +1,25 @@
+{
+  "name": "presentation",
+  "version": "1.0.0",
+  "description": "New In Town? Looking for some Entertainment, but don't know where to look?",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorvasujoseph/Presentation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victorvasujoseph/Presentation/issues"
+  },
+  "homepage": "https://github.com/victorvasujoseph/Presentation#readme",
+  "devDependencies": {
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  }
+}

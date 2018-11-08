@@ -1,3 +1,5 @@
+import './storageHelper';
+
 $(document).ready(function () {
   /**
    * 
