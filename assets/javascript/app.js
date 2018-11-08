@@ -86,7 +86,7 @@ $(document).ready(function () {
         this.sortOrder = "desc";
       }
       $.getJSON({
-        url: 'http://ipinfo.io',
+        url: 'https://ipinfo.io',
         method: "GET"
       }).
         then(function (res) {
