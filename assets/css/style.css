@@ -138,3 +138,18 @@ footer {
     margin-bottom: 0;
     visibility: hidden;
 }
+.my-events{
+    margin-bottom: 0;
+    font-family: 'Poor Story', cursive;
+}
+#cancel {
+    position: absolute;
+    right: 27%;
+    top: 148px;
+    width: 25px;
+    height: 25px;
+}
+.ticket-link{
+    position: absolute;
+    right: 50px;
+}
