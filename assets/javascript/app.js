@@ -164,7 +164,7 @@ $(document).ready(function () {
       $(".events").empty();
     });
 
-    seatgeek.getEvents(11, false, taxonomies);
+    seatgeek.getEvents(11, true, taxonomies);
 
     //console.log(seatgeek.events);
     //populateList(seatgeek);
