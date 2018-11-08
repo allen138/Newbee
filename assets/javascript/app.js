@@ -17,9 +17,6 @@ $(document).ready(function () {
     messagingSenderId: "833251081928"
   };
 
-  firebase.initializeApp(config);
-  var database = firebase.database();
-
   var userDataConfig = {
     apiKey: "AIzaSyBLZjIB6nUrsTKU2lHJuRLoPgNosQfAquE",
     authDomain: "ucb-project-search-event.firebaseapp.com",
@@ -32,9 +29,13 @@ $(document).ready(function () {
   const userdata = firebase.initializeApp(userDataConfig, 'userdata');
   var userDatabase = firebase.database(userdata);
 
+  firebase.initializeApp(config);
+  var database = firebase.database();
+
   var loggedInUserID = undefined;
   var loggedInUserName = undefined;
-  
+
+  /** Check's Local storage to see if the user is already logged in */
   var checkUserAlreadyLoggedIn = function (){
     loggedInUserID = stg.getLocalStorage('loggedInUserID');
     loggedInUserName = stg.getLocalStorage('loggedInUserName');
@@ -101,7 +102,7 @@ $(document).ready(function () {
     }
   };
 
-  //click sign-in
+  /** Triggered when user Click's Sign In */
 
   $('#sign-in').on("click", function (event) {
     event.preventDefault();
@@ -152,9 +153,6 @@ $(document).ready(function () {
     });
 
     seatgeek.getEvents(11, true, taxonomies);
-
-    //console.log(seatgeek.events);
-    //populateList(seatgeek);
     console.log(seatgeek);
   });
 
@@ -162,11 +160,6 @@ $(document).ready(function () {
   /*************************************************** */
   //List Populators and event click functions
   /*************************************************** */
-
-  // database.ref().on("value", function (snapshot) {
-  //   var myEvents = snapshot.child("selectedEvents").val();
-  //   createEventButtons(myEvents, $(".myEvents"));
-  // });
 
   database.ref().on("value", function (snapshot) {
     if (loggedInUserID !== null){
@@ -297,34 +290,6 @@ $(document).ready(function () {
     });
     return isUser;
   }
-
-  /* Get's all values from Fire Base */
-  var getAllEvent = function () {
-
-    database.ref().on("value", function (snapshot) {
-      snapshot.forEach(function (childSnapshot) {
-        var childData = childSnapshot.val();
-        console.log(childData);
-      }, function (errorObject) {
-        console.log("Error " + errorObject.code)
-      });
-    });
-  };
-
-  /* Get's child from Fire Base */
-  var checkChildAdded = function () {
-
-    database.ref().on("child_added", function (snapshot) {
-      var val = snapshot.val();
-      console.log(val);
-
-    }, function (errorObject) {
-      console.log("Error " + errorObject.code);
-    });
-  }
-
- 
-
 }
 
 );
