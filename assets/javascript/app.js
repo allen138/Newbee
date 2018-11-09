@@ -152,7 +152,7 @@ $(document).ready(function () {
       $(".events").empty();
     });
 
-    seatgeek.getEvents(11, true, taxonomies);
+    seatgeek.getEvents(22, true, taxonomies);
     console.log(seatgeek);
   });
 
