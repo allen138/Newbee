@@ -153,6 +153,7 @@ $(document).ready(function () {
     });
 
     seatgeek.getEvents(22, true, taxonomies);
+
     console.log(seatgeek);
   });
 
