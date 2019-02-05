@@ -182,7 +182,7 @@ $(document).ready(function () {
       var time = $("<div>");
       var event = myEvents[i];
       var id = event.id;
-      var buyTicketUrl = $("<a class='ticket-link' href="+myEvents[i].url+" target='_blank'>Find Tickets</a>");
+      var buyTicketUrl = $("<a class='ticket-link' href="+myEvents[i].url+" target='_blank'>Tickets</a>");
 
       time= moment(event.datetime_local).format("llll");
       eventContainer.addClass("eventContainer")

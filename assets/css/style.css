@@ -151,5 +151,26 @@ footer {
 }
 .ticket-link{
     position: absolute;
-    right: 50px;
+    right: 40px;
+}
+/* Media Queries */
+@media (max-width: 620px) {
+    .container{
+        width: 100%;
+        margin: 0 auto;
+        padding: 5px;
+    }
+    .input-group-text{
+        width: 98%;
+        padding: 8px;
+        margin: 0 auto;
+    }
+    #search{
+        margin-left: 8px;
+    }
+    .form-check-label{
+        position: relative;
+        display: block;
+        padding-left: 24px;
+    }
 }
