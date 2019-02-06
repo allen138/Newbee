@@ -151,7 +151,7 @@ footer {
 }
 .ticket-link{
     position: absolute;
-    right: 40px;
+    right: 32px;
 }
 /* Media Queries */
 @media (max-width: 620px) {

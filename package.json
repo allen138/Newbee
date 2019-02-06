@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/victorvasujoseph/Presentation.git"
+    "url": "git+https://github.com/allen138/Newbee.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/victorvasujoseph/Presentation/issues"
+    "url": "https://github.com/allen138/Newbee/issues"
   },
-  "homepage": "https://github.com/victorvasujoseph/Presentation#readme",
+  "homepage": "https://github.com/allen138/Newbee#readme",
   "devDependencies": {
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2"
