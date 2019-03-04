@@ -1,4 +1,5 @@
 # Newbee App
+![default](assets/images/newbeeSS.png)
 ## Overview
 Looking for some Entertainment, but don't know where to look?
 Look no further...
